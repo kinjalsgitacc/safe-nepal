@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Real-time disaster alerts and emergency resources for Nepal">
+    <title>SafeNepal | Disaster Preparedness Hub</title>
+
+    <!-- Preload critical resources -->
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" as="style">
+    <link rel="preload" href="assets/css/style.css" as="style">
+
+    <!-- CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body>
+    <!-- Skip to content link for accessibility -->
+    <a href="#main-content" class="visually-hidden-focusable">Skip to main content</a>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary py-3">
+        <div class="container">
+            <a class="navbar-brand fw-bold fs-3" href="index.html">
+                <i class="fas fa-shield-alt me-2"></i>SafeNepal
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto justify-content-center">
+
+                    <li class="nav-item"><a class="nav-link active" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="safety.html">Safety Guides</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contacts.html">Emergency Contacts</a></li>
+                    <li class="nav-item"><a class="nav-link" href="shelters.html">Shelters</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main id="main-content" class="container-fluid py-4">
+        <!-- Hero Alert Section -->
+        <section class="row g-3 mb-5">
+            <!-- Alert Box -->
+            <div class="col-lg-6">
+                <div class="alert alert-danger border-0 shadow-lg p-4 rounded-3">
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="fas fa-triangle-exclamation fa-2x me-3"></i>
+                        <h1 class="h2 mb-0">FLOOD WARNING</h1>
+                    </div>
+                    <ul class="list-unstyled mb-4">
+                        <li class="mb-2"><strong>Location:</strong> Sindhupalchok District</li>
+                        <li class="mb-2"><strong>Time:</strong> 14:30 NST</li>
+                        <li><strong>Severity:</strong> High Risk</li>
+                    </ul>
+                    <a href="safety.html#floods" class="btn btn-light text-danger fw-bold">
+                        <i class="fas fa-book-open me-2"></i>Safety Instructions
+                    </a>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="col-lg-6">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="card h-100 border-0 bg-success bg-opacity-10 shadow-sm">
+                            <div class="card-body">
+                                <h3 class="h5 mb-3 text-success">
+                                    <i class="fas fa-crosshairs me-2"></i>Need Help?
+                                </h3>
+                                <div class="d-grid gap-2">
+                                    <a href="safety.html" class="btn btn-success">
+                                        <i class="fas fa-book me-2"></i>Safety Guide
+                                    </a>
+                                    <a href="contacts.html" class="btn btn-outline-success">
+                                        <i class="fas fa-phone me-2"></i>Emergency Contacts
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="card h-100 border-0 bg-warning bg-opacity-10 shadow-sm">
+                            <div class="card-body">
+                                <h3 class="h5 mb-3 text-warning">
+                                    <i class="fas fa-flag me-2"></i>See Disaster?
+                                </h3>
+                                <button class="btn btn-warning w-100" data-bs-toggle="modal" data-bs-target="#reportModal">
+                                    <i class="fas fa-bullhorn me-2"></i>Report Now
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Emergency Resources -->
+        <section class="container mb-5">
+            <h2 class="text-center mb-4 display-5 fw-bold text-primary">
+                <i class="fas fa-lightbulb me-2"></i>Be Ready, Stay Safe
+            </h2>
+
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center p-4">
+                            <div class="icon-lg bg-danger bg-opacity-10 text-danger rounded-circle mb-3 mx-auto">
+                                <i class="fas fa-phone-alt"></i>
+                            </div>
+                            <h3 class="h4">Emergency Numbers</h3>
+                            <ul class="list-unstyled mb-4">
+                                <li class="py-2 border-bottom">Police: <strong>100</strong></li>
+                                <li class="py-2 border-bottom">Ambulance: <strong>102</strong></li>
+                                <li class="py-2">Fire: <strong>101</strong></li>
+                            </ul>
+                            <a href="contacts.html" class="btn btn-outline-primary">All Contacts</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center p-4">
+                            <div class="icon-lg bg-success bg-opacity-10 text-success rounded-circle mb-3 mx-auto">
+                                <i class="fas fa-house-damage"></i>
+                            </div>
+                            <h3 class="h4">Earthquake Safety</h3>
+                            <ol class="list-unstyled mb-4 text-start">
+                                <li class="py-2 d-flex">
+                                    <span class="badge bg-success me-3">1</span> Drop to the ground
+                                </li>
+                                <li class="py-2 d-flex">
+                                    <span class="badge bg-success me-3">2</span> Take cover under furniture
+                                </li>
+                                <li class="py-2 d-flex">
+                                    <span class="badge bg-success me-3">3</span> Hold on until shaking stops
+                                </li>
+                            </ol>
+                            <a href="safety.html" class="btn btn-outline-primary">Full Guide</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6 mb-3 mb-md-0">
+                    <h3 class="h5 mb-2">
+                        <i class="fas fa-shield-alt me-2"></i>SafeNepal
+                    </h3>
+                    <p class="small mb-0">Your trusted disaster preparedness partner</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="small mb-0">&copy; 2025 SafeNepal. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Report Modal (Improved) -->
+    <div class="modal fade" id="reportModal" tabindex="-1" aria-hidden="true">
+        <!-- Modal content with better structure -->
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Enhanced JS with proper error handling
+        document.addEventListener('DOMContentLoaded', function() {
+            // Geolocation with loading state
+            const useLocationBtn = document.getElementById('useLocationBtn');
+            if (useLocationBtn) {
+                useLocationBtn.addEventListener('click', handleGeolocation);
+            }
+
+            // Form submission with validation
+            const disasterForm = document.getElementById('disasterForm');
+            if (disasterForm) {
+                disasterForm.addEventListener('submit', handleFormSubmit);
+            }
+        });
+
+        async function handleGeolocation() {
+            const locationInput = document.getElementById('location');
+            const btn = document.getElementById('useLocationBtn');
+
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Locating...';
+            btn.disabled = true;
+
+            try {
+                const position = await new Promise((resolve, reject) => {
+                    navigator.geolocation.getCurrentPosition(resolve, reject, {
+                        enableHighAccuracy: true,
+                        timeout: 10000
+                    });
+                });
+
+                const {
+                    latitude,
+                    longitude
+                } = position.coords;
+                locationInput.value = `${latitude.toFixed(5)}, ${longitude.toFixed(5)}`;
+
+                // Optional: Reverse geocoding API call here
+            } catch (error) {
+                locationInput.value = '';
+                showToast('Location access failed. Please enter manually.', 'danger');
+            } finally {
+                btn.innerHTML = '<i class="fas fa-location-crosshairs me-2"></i>Use My Location';
+                btn.disabled = false;
+            }
+        }
+
+        function handleFormSubmit(event) {
+            event.preventDefault();
+
+            // Enhanced validation and submission
+        }
+
+        function showToast(message, type) {
+            // Implement toast notification
+        }
+    </script>
+</body>
+
+</html>

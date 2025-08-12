@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Emergency Shelters | SafeNepal</title>
+    <meta name="description" content="Find nearby emergency shelters and disaster alerts in Nepal">
+
+    <!-- Preload critical resources -->
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" as="style">
+    <link rel="preload" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" as="style">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+         :root {
+            --primary: #2563eb;
+            --primary-light: #dbeafe;
+            --danger: #dc2626;
+            --danger-light: #fee2e2;
+            --success: #16a34a;
+            --success-light: #dcfce7;
+            --warning: #d97706;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8fafc;
+            line-height: 1.6;
+        }
+        /* Accessibility */
+        
+         :focus-visible {
+            outline: 3px solid var(--primary);
+            outline-offset: 2px;
+        }
+        /* Navbar */
+        
+        .navbar {
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        /* Page Header */
+        
+        .page-header {
+            background: linear-gradient(135deg, var(--primary) 0%, #1e40af 100%);
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 1.5rem;
+        }
+        /* Map Container */
+        
+        .map-container {
+            height: 65vh;
+            min-height: 500px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            position: relative;
+        }
+        
+        #map {
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+        /* Map Controls */
+        
+        .map-controls {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .map-control-btn {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: none;
+            color: var(--primary);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .map-control-btn:hover {
+            background: #f1f5ff;
+            transform: translateY(-1px);
+        }
+        /* Sidebar */
+        
+        .sidebar {
+            height: 65vh;
+            overflow-y: auto;
+            padding-right: 0.5rem;
+        }
+        /* Shelter Cards */
+        
+        .shelter-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .shelter-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .shelter-card.active {
+            border-left-color: var(--danger);
+            background-color: #f8f9fe;
+        }
+        
+        .shelter-header {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 0.5rem;
+        }
+        
+        .shelter-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(37, 99, 235, 0.1);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            color: var(--primary);
+        }
+        
+        .shelter-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        
+        .shelter-distance {
+            color: var(--primary);
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        
+        .shelter-meta {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+        
+        .shelter-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+        }
+        /* Status Indicators */
+        
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        
+        .status-earthquake {
+            background: rgba(220, 38, 38, 0.1);
+            color: var(--danger);
+        }
+        
+        .status-flood {
+            background: rgba(30, 136, 229, 0.1);
+            color: #1e88e5;
+        }
+        /* Search Box */
+        
+        .search-box {
+            position: relative;
+            margin-bottom: 1rem;
+        }
+        
+        .search-box i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+        }
+        
+        .search-box input {
+            padding-left: 2.5rem;
+            border-radius: 8px;
+        }
+        /* Loading State */
+        
+        .loading-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .loading-spinner {
+            width: 3rem;
+            height: 3rem;
+            border: 3px solid rgba(37, 99, 235, 0.1);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1rem;
+        }
+        
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        /* Dark Mode */
+        
+        @media (prefers-color-scheme: dark) {
+            body {
+                background-color: #1e293b;
+                color: #e2e8f0;
+            }
+            .shelter-card {
+                background-color: #334155;
+                color: #e2e8f0;
+            }
+            .map-control-btn {
+                background-color: #334155;
+                color: #e2e8f0;
+            }
+            .shelter-card.active {
+                background-color: #1e293b;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Skip to content link -->
+    <a href="#main-content" class="visually-hidden-focusable">Skip to main content</a>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary py-3">
+        <div class="container">
+            <a class="navbar-brand fw-bold fs-3" href="index.html">
+                <i class="fas fa-shield-alt me-2"></i>SafeNepal
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto justify-content-center">
+
+                    <li class="nav-item"><a class="nav-link " href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="safety.html">Safety Guides</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contacts.html">Emergency Contacts</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="shelters.html">Shelters</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <header class="page-header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1 class="display-5 fw-bold mb-2">Emergency Shelters</h1>
+                    <p class="lead mb-0">Find safe locations near you during disasters</p>
+                </div>
+                <div class="col-md-4 text-md-end">
+                    <div class="d-flex gap-2 justify-content-md-end">
+                        <button id="btn-legend" class="btn btn-outline-light">
+                            <i class="fas fa-layer-group me-1"></i> Legend
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main id="main-content" class="container mb-5">
+        <!-- Status Indicators -->
+        <div class="row mb-4">
+            <div class="col-md-6 mb-3 mb-md-0">
+                <div class="status-indicator status-earthquake">
+                    <i class="fas fa-bolt"></i>
+                    <span id="eq-status">Loading earthquake data...</span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="status-indicator status-flood">
+                    <i class="fas fa-water"></i>
+                    <span id="flood-status">Checking flood indicators...</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <!-- Map Column -->
+            <div class="col-lg-8">
+                <div class="map-container">
+                    <div id="map"></div>
+
+                    <!-- Map Controls -->
+                    <div class="map-controls">
+                        <button id="btn-locate" class="map-control-btn" title="Locate me">
+                            <i class="fas fa-location-crosshairs"></i>
+                        </button>
+                        <button id="btn-refresh" class="map-control-btn" title="Refresh data">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                        <button id="btn-layers" class="map-control-btn" title="Toggle layers">
+                            <i class="fas fa-layer-group"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar Column -->
+            <div class="col-lg-4">
+                <div class="sidebar">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="search-input" class="form-control" placeholder="Search shelters...">
+                    </div>
+
+                    <div id="shelter-list">
+                        <div class="loading-state">
+                            <div class="loading-spinner"></div>
+                            <p>Loading shelters near you...</p>
+                            <button id="btn-retry" class="btn btn-primary mt-2" style="display: none;">
+                                <i class="fas fa-sync-alt me-1"></i> Retry
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 mb-3 mb-md-0">
+                    <h3 class="h5">
+                        <i class="fas fa-shield-alt me-2"></i>SafeNepal
+                    </h3>
+                    <p class="small mb-0">Your trusted disaster preparedness resource</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="small mb-0">&copy; 2025 SafeNepal. All rights reserved.</p>
+                    <p class="small mb-0">Data sources: OpenStreetMap, USGS, Open-Meteo</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+    <script>
+        // Configuration
+        const CONFIG = {
+            USGS_EARTHQUAKE_URL: 'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson',
+            OVERPASS_API: 'https://overpass-api.de/api/interpreter',
+            SHELTER_RADIUS: 15000, // 15km radius
+            DEFAULT_LOCATION: [27.7172, 85.3240], // Kathmandu coordinates
+            DEFAULT_ZOOM: 12
+        };
+
+        // Global variables
+        let map;
+        let userLocation = null;
+        let userMarker = null;
+        let shelters = [];
+        let earthquakeLayer = L.layerGroup();
+        let floodLayer = L.layerGroup();
+        let shelterLayer = L.layerGroup();
+        let shelterCluster = L.markerClusterGroup();
+
+        // Initialize the map
+        function initMap() {
+            map = L.map('map', {
+                zoomControl: false,
+                preferCanvas: true
+            }).setView(CONFIG.DEFAULT_LOCATION, CONFIG.DEFAULT_ZOOM);
+
+            // Base map tiles
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            // Add layers
+            earthquakeLayer.addTo(map);
+            floodLayer.addTo(map);
+            shelterCluster.addTo(map);
+
+            // Custom zoom control
+            L.control.zoom({
+                position: 'topright'
+            }).addTo(map);
+        }
+
+        // Locate user and center map
+        function locateUser() {
+            if (!navigator.geolocation) {
+                alert('Geolocation is not supported by your browser.');
+                return;
+            }
+
+            showLoadingState(true, 'Finding your location...');
+
+            navigator.geolocation.getCurrentPosition(
+                position => {
+                    userLocation = [position.coords.latitude, position.coords.longitude];
+
+                    // Update user marker
+                    if (!userMarker) {
+                        userMarker = L.marker(userLocation, {
+                            icon: L.divIcon({
+                                className: 'user-location-marker',
+                                html: '<div class="pulse-dot"></div>',
+                                iconSize: [20, 20]
+                            }),
+                            zIndexOffset: 1000
+                        }).addTo(map);
+                        userMarker.bindPopup('Your current location');
+                    } else {
+                        userMarker.setLatLng(userLocation);
+                    }
+
+                    // Add accuracy circle
+                    if (position.coords.accuracy > 0) {
+                        if (window.accuracyCircle) {
+                            window.accuracyCircle.setLatLng(userLocation).setRadius(position.coords.accuracy);
+                        } else {
+                            window.accuracyCircle = L.circle(userLocation, {
+                                radius: position.coords.accuracy,
+                                color: '#2563eb',
+                                fillColor: '#2563eb',
+                                fillOpacity: 0.1,
+                                weight: 1
+                            }).addTo(map);
+                        }
+                    }
+
+                    // Center map on user
+                    map.setView(userLocation, 14);
+
+                    // Load data
+                    loadData();
+                },
+                error => {
+                    console.error('Geolocation error:', error);
+                    showLoadingState(false, 'Could not get your location. Using default view.', true);
+                    loadData();
+                }, {
+                    enableHighAccuracy: true,
+                    timeout: 10000,
+                    maximumAge: 60000
+                }
+            );
+        }
+
+        // Load all data (earthquakes, floods, shelters)
+        function loadData() {
+            showLoadingState(true, 'Loading disaster data...');
+
+            // Clear existing data
+            earthquakeLayer.clearLayers();
+            floodLayer.clearLayers();
+            shelterCluster.clearLayers();
+
+            // Load in parallel
+            Promise.all([
+                loadEarthquakes(),
+                loadFloodData(),
+                loadShelters()
+            ]).catch(error => {
+                console.error('Error loading data:', error);
+                showLoadingState(false, 'Failed to load some data. Please try again.', true);
+            });
+        }
+
+        // Load earthquake data from USGS
+        async function loadEarthquakes() {
+            try {
+                document.getElementById('eq-status').textContent = 'Loading earthquakes...';
+                const response = await fetch(CONFIG.USGS_EARTHQUAKE_URL);
+                const data = await response.json();
+
+                let earthquakeCount = 0;
+
+                data.features.forEach(feature => {
+                    const [lon, lat, depth] = feature.geometry.coordinates;
+                    const magnitude = feature.properties.mag;
+                    const place = feature.properties.place;
+                    const time = new Date(feature.properties.time).toLocaleString();
+
+                    // Only show significant earthquakes
+                    if (magnitude < 2.5) return;
+
+                    const marker = L.circleMarker([lat, lon], {
+                        radius: magnitude * 2,
+                        fillColor: getEarthquakeColor(magnitude),
+                        color: '#000',
+                        weight: 1,
+                        opacity: 0.8,
+                        fillOpacity: 0.7
+                    }).bindPopup(`
+                        <strong>Magnitude ${magnitude}</strong><br>
+                        ${place}<br>
+                        ${time}<br>
+                        Depth: ${depth} km
+                    `);
+
+                    earthquakeLayer.addLayer(marker);
+                    earthquakeCount++;
+                });
+
+                document.getElementById('eq-status').textContent =
+                    `${earthquakeCount} earthquakes (past 24h)`;
+
+            } catch (error) {
+                console.error('Error loading earthquake data:', error);
+                document.getElementById('eq-status').textContent =
+                    'Earthquake data unavailable';
+            }
+        }
+
+        // Get color based on earthquake magnitude
+        function getEarthquakeColor(magnitude) {
+            if (magnitude >= 6) return '#d32f2f'; // red
+            if (magnitude >= 5) return '#f57c00'; // orange
+            if (magnitude >= 4) return '#fbc02d'; // yellow
+            return '#7cb342'; // green
+        }
+
+        // Load flood data from Open-Meteo
+        async function loadFloodData() {
+            if (!userLocation) {
+                document.getElementById('flood-status').textContent =
+                    'Enable location for flood data';
+                return;
+            }
+
+            try {
+                document.getElementById('flood-status').textContent = 'Checking flood risk...';
+                const [lat, lon] = userLocation;
+                const response = await fetch(`https://api.open-meteo.com/v1/flood?latitude=${lat}&longitude=${lon}`);
+                const data = await response.json();
+
+                if (data.discharge && data.discharge.length > 0) {
+                    const latest = data.discharge[data.discharge.length - 1];
+                    const threshold = data.relative_to_threshold ?
+                        data.relative_to_threshold[data.relative_to_threshold.length - 1] : null;
+
+                    if (threshold && threshold >= 1) {
+                        // Add flood warning area
+                        L.circle(userLocation, {
+                                radius: 2000,
+                                color: '#1e88e5',
+                                fillColor: '#1e88e5',
+                                fillOpacity: 0.1,
+                                weight: 2
+                            }).addTo(floodLayer)
+                            .bindPopup('<strong>Flood Risk</strong><br>High river discharge detected');
+
+                        document.getElementById('flood-status').textContent =
+                            `Flood risk detected (${threshold.toFixed(1)}× threshold)`;
+                    } else {
+                        document.getElementById('flood-status').textContent =
+                            'No immediate flood risk';
+                    }
+                } else {
+                    document.getElementById('flood-status').textContent =
+                        'Flood data unavailable';
+                }
+            } catch (error) {
+                console.error('Error loading flood data:', error);
+                document.getElementById('flood-status').textContent =
+                    'Flood data unavailable';
+            }
+        }
+
+        // Load shelters from OpenStreetMap
+        async function loadShelters() {
+            if (!userLocation) {
+                showLoadingState(false, 'Enable location to find nearby shelters', true);
+                return;
+            }
+
+            try {
+                showLoadingState(true, 'Finding nearby shelters...');
+
+                const [lat, lon] = userLocation;
+                const query = `
+                    [out:json][timeout:25];
+                    (
+                      node["amenity"="shelter"](around:${CONFIG.SHELTER_RADIUS},${lat},${lon});
+                      node["emergency"="shelter"](around:${CONFIG.SHELTER_RADIUS},${lat},${lon});
+                      way["amenity"="shelter"](around:${CONFIG.SHELTER_RADIUS},${lat},${lon});
+                      way["emergency"="shelter"](around:${CONFIG.SHELTER_RADIUS},${lat},${lon});
+                    );
+                    out center;
+                `;
+
+                const response = await fetch(CONFIG.OVERPASS_API, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: `data=${encodeURIComponent(query)}`
+                });
+
+                const data = await response.json();
+                shelters = [];
+
+                if (data.elements && data.elements.length > 0) {
+                    // Process shelter data
+                    data.elements.forEach(element => {
+                        let shelter = {
+                            id: element.id,
+                            type: element.type,
+                            name: (element.tags && element.tags.name) || 'Unnamed Shelter',
+                            lat: element.type === 'node' ? element.lat : (element.center ? element.center.lat : undefined),
+                            lon: element.type === 'node' ? element.lon : (element.center ? element.center.lon : undefined),
+                            tags: element.tags || {}
+                        };
+
+
+                        if (shelter.lat && shelter.lon) {
+                            // Calculate distance from user
+                            shelter.distance = calculateDistance(
+                                userLocation[0], userLocation[1],
+                                shelter.lat, shelter.lon
+                            );
+                            shelters.push(shelter);
+                        }
+                    });
+
+                    // Sort by distance
+                    shelters.sort((a, b) => a.distance - b.distance);
+
+                    // Render shelters
+                    renderShelters();
+                    showLoadingState(false);
+                } else {
+                    showLoadingState(false, 'No shelters found in your area', false);
+                }
+            } catch (error) {
+                console.error('Error loading shelters:', error);
+                showLoadingState(false, 'Failed to load shelters. Please try again.', true);
+            }
+        }
+
+        // Render shelters on map and in list
+        function renderShelters() {
+            // Clear existing
+            shelterCluster.clearLayers();
+            const shelterList = document.getElementById('shelter-list');
+            shelterList.innerHTML = '';
+
+            if (shelters.length === 0) {
+                shelterList.innerHTML = `
+                    <div class="alert alert-info">
+                        No shelters found within ${CONFIG.SHELTER_RADIUS/1000}km. 
+                        Try a larger area or check official sources.
+                    </div>
+                `;
+                return;
+            }
+
+            // Add to map and list
+            shelters.forEach((shelter, index) => {
+                        // Create marker
+                        const marker = L.marker([shelter.lat, shelter.lon], {
+                            icon: L.divIcon({
+                                className: 'shelter-marker',
+                                html: `<div class="shelter-marker-inner"><i class="fas fa-home"></i></div>`,
+                                iconSize: [32, 32]
+                            })
+                        });
+
+                        // Bind popup
+                        const popupContent = `
+                    <div class="shelter-popup">
+                        <h6>${escapeHtml(shelter.name)}</h6>
+                        <p>${(shelter.distance/1000).toFixed(2)} km away</p>
+                        ${shelter.tags.capacity ? `<p><strong>Capacity:</strong> ${shelter.tags.capacity}</p>` : ''}
+                        ${shelter.tags.operator ? `<p><strong>Operator:</strong> ${shelter.tags.operator}</p>` : ''}
+                        <div class="d-flex gap-2 mt-2">
+                            <button onclick="navigateToShelter(${shelter.lat}, ${shelter.lon})" 
+                                class="btn btn-sm btn-primary">
+                                <i class="fas fa-directions"></i> Directions
+                            </button>
+                            ${shelter.tags.phone ? `
+                            <button onclick="callShelter('${shelter.tags.phone}')" 
+                                class="btn btn-sm btn-success">
+                                <i class="fas fa-phone"></i> Call
+                            </button>
+                            ` : ''}
+                        </div>
+                    </div>
+                `;
+                marker.bindPopup(popupContent);
+                shelterCluster.addLayer(marker);
+                
+                // Create list item
+                const shelterCard = document.createElement('div');
+                shelterCard.className = 'shelter-card';
+                shelterCard.dataset.id = index;
+                shelterCard.innerHTML = `
+                    <div class="shelter-header">
+                        <div class="shelter-icon">
+                            <i class="fas fa-home"></i>
+                        </div>
+                        <div>
+                            <div class="shelter-title">${escapeHtml(shelter.name)}</div>
+                            <div class="shelter-distance">${(shelter.distance/1000).toFixed(2)} km away</div>
+                        </div>
+                    </div>
+                    ${shelter.tags.capacity ? `
+                    <div class="shelter-meta">
+                        <span><i class="fas fa-users"></i> ${shelter.tags.capacity}</span>
+                    </div>
+                    ` : ''}
+                    <div class="shelter-actions">
+                        <button onclick="navigateToShelter(${shelter.lat}, ${shelter.lon})" 
+                            class="btn btn-sm btn-outline-primary">
+                            <i class="fas fa-directions"></i> Directions
+                        </button>
+                        ${shelter.tags.phone ? `
+                        <button onclick="callShelter('${shelter.tags.phone}')" 
+                            class="btn btn-sm btn-outline-success">
+                            <i class="fas fa-phone"></i> Call
+                        </button>
+                        ` : ''}
+                    </div>
+                `;
+                
+                // Add click handler
+                shelterCard.addEventListener('click', () => {
+                    // Highlight on map
+                    map.setView([shelter.lat, shelter.lon], Math.max(14, map.getZoom()));
+                    marker.openPopup();
+                    
+                    // Highlight in list
+                    document.querySelectorAll('.shelter-card').forEach(card => {
+                        card.classList.remove('active');
+                    });
+                    shelterCard.classList.add('active');
+                });
+                
+                shelterList.appendChild(shelterCard);
+            });
+        }
+
+        // Show/hide loading state
+        function showLoadingState(loading, message = '', showRetry = false) {
+            const loadingElement = document.getElementById('shelter-list');
+            
+            if (loading) {
+                loadingElement.innerHTML = `
+                    <div class="loading-state">
+                        <div class="loading-spinner"></div>
+                        <p>${message}</p>
+                    </div>
+                `;
+            } else if (message) {
+                loadingElement.innerHTML = `
+                    <div class="loading-state">
+                        <i class="fas fa-info-circle mb-2" style="font-size:2rem;color:#64748b;"></i>
+                        <p>${message}</p>
+                        ${showRetry ? `
+                        <button id="btn-retry" class="btn btn-primary mt-2">
+                            <i class="fas fa-sync-alt me-1"></i> Retry
+                        </button>
+                        ` : ''}
+                    </div>
+                `;
+                
+                if (showRetry) {
+                    document.getElementById('btn-retry').addEventListener('click', loadData);
+                }
+            }
+        }
+
+        // Calculate distance between two coordinates (Haversine formula)
+        function calculateDistance(lat1, lon1, lat2, lon2) {
+            const R = 6371000; // Earth radius in meters
+            const φ1 = lat1 * Math.PI/180;
+            const φ2 = lat2 * Math.PI/180;
+            const Δφ = (lat2-lat1) * Math.PI/180;
+            const Δλ = (lon2-lon1) * Math.PI/180;
+            
+            const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
+                      Math.cos(φ1) * Math.cos(φ2) *
+                      Math.sin(Δλ/2) * Math.sin(Δλ/2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            
+            return R * c;
+        }
+
+        // Escape HTML for safety
+        function escapeHtml(unsafe) {
+            return unsafe
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        // Navigation function
+        function navigateToShelter(lat, lon) {
+            const url = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lon}`;
+            window.open(url, '_blank');
+        }
+
+        // Call shelter function
+        function callShelter(phone) {
+            if (!phone) {
+                alert('No phone number available for this shelter');
+                return;
+            }
+            
+            // Clean phone number
+            const cleanPhone = phone.replace(/[^\d+]/g, '');
+            window.location.href = `tel:${cleanPhone}`;
+        }
+
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', () => {
+            initMap();
+            locateUser();
+            
+            // Event listeners
+            document.getElementById('btn-locate').addEventListener('click', locateUser);
+            document.getElementById('btn-refresh').addEventListener('click', loadData);
+            
+            // Search functionality
+            document.getElementById('search-input').addEventListener('input', (e) => {
+                const query = e.target.value.toLowerCase();
+                document.querySelectorAll('.shelter-card').forEach(card => {
+                    const name = card.querySelector('.shelter-title').textContent.toLowerCase();
+                    card.style.display = name.includes(query) ? '' : 'none';
+                });
+            });
+            
+            // Expose functions to global scope
+            window.navigateToShelter = navigateToShelter;
+            window.callShelter = callShelter;
+        });
+    </script>
+</body>
+
+</html>

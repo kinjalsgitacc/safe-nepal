@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Comprehensive safety guides for earthquakes and floods in Nepal">
+    <title>Safety Guides | SafeNepal Disaster Preparedness</title>
+
+    <!-- Preload critical resources -->
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" as="style">
+    <link rel="preload" href="assets/css/style.css" as="style">
+
+    <!-- CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        .card-body {
+    padding: 42px;
+}
+         :root {
+            --primary: #2563eb;
+            --primary-light: #dbeafe;
+            --danger: #dc2626;
+            --danger-light: #fee2e2;
+            --success: #16a34a;
+            --success-light: #dcfce7;
+            --warning: #d97706;
+            --warning-light: #fef3c7;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8fafc;
+            line-height: 1.6;
+        }
+        /* Accessibility focus styles */
+        
+         :focus-visible {
+            outline: 3px solid var(--primary);
+            outline-offset: 2px;
+        }
+        /* Navbar */
+        
+        .navbar {
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        /* Header */
+        
+        .page-header {
+            background: linear-gradient(135deg, var(--primary) 0%, #1e40af 100%);
+            color: white;
+            padding: 3rem 0;
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .page-header::after {
+            content: "";
+            position: absolute;
+            bottom: -50px;
+            left: 0;
+            right: 0;
+            height: 100px;
+            background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" fill="%23f8fafc" opacity=".25"/><path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" fill="%23f8fafc" opacity=".5"/><path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" fill="%23f8fafc"/></svg>') no-repeat;
+            background-size: cover;
+        }
+        /* Safety Cards */
+        
+        .safety-card {
+            border: none;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            height: 100%;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        
+        .safety-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .safety-card .card-header {
+            border-bottom: none;
+            padding: 1.5rem;
+            font-weight: 600;
+        }
+        
+        .safety-card .card-body {
+            padding: 1.5rem;
+        }
+        
+        .safety-card.before {
+            background-color: var(--primary-light);
+            border-left: 4px solid var(--primary);
+        }
+        
+        .safety-card.before .card-header {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .safety-card.during {
+            background-color: var(--danger-light);
+            border-left: 4px solid var(--danger);
+        }
+        
+        .safety-card.during .card-header {
+            background-color: var(--danger);
+            color: white;
+        }
+        
+        .safety-card.after {
+            background-color: var(--success-light);
+            border-left: 4px solid var(--success);
+        }
+        
+        .safety-card.after .card-header {
+            background-color: var(--success);
+            color: white;
+        }
+        /* Checklist items */
+        
+        .checklist-item {
+            position: relative;
+            padding-left: 2rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .checklist-item::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--success);
+            font-weight: bold;
+        }
+        /* Section headers */
+        
+        .disaster-section {
+            margin-bottom: 3rem;
+            position: relative;
+        }
+        
+        .disaster-section h2 {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 2rem;
+        }
+        
+        .disaster-section h2::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 50px;
+            height: 4px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+        /* Print styles */
+        
+        @media print {
+            .navbar,
+            .page-header::after,
+            .btn {
+                display: none !important;
+            }
+            body {
+                background: white !important;
+                color: black !important;
+                font-size: 12pt;
+            }
+            .safety-card {
+                break-inside: avoid;
+                box-shadow: none !important;
+                border: 1px solid #ddd !important;
+                margin-bottom: 1rem;
+            }
+        }
+        /* Dark mode support */
+        
+        @media (prefers-color-scheme: dark) {
+            body {
+                background-color: #1e293b;
+                color: #e2e8f0;
+            }
+            .safety-card {
+                background-color: #334155 !important;
+            }
+            .safety-card.before {
+                border-left-color: var(--primary);
+            }
+            .safety-card.during {
+                border-left-color: var(--danger);
+            }
+            .safety-card.after {
+                border-left-color: var(--success);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Skip to content link -->
+    <a href="#main-content" class="visually-hidden-focusable">Skip to main content</a>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary py-3">
+        <div class="container ms-auto">
+            <a class="navbar-brand fw-bold fs-3" href="index.html">
+                <i class="fas fa-shield-alt me-2"></i>SafeNepal
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto justify-content-center">
+
+                    <li class="nav-item"><a class="nav-link " href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="safety.html">Safety Guides</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contacts.html">Emergency Contacts</a></li>
+                    <li class="nav-item"><a class="nav-link" href="shelters.html">Shelters</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- Page Header -->
+    <header class="page-header text-center">
+        <div class="container">
+            <h1 class="display-4 fw-bold mb-3">Safety Guidance</h1>
+            <p class="lead mb-0">Essential steps to protect yourself and loved ones during disasters</p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main id="main-content" class="container py-4">
+        <!-- Earthquake Section -->
+        <section class="disaster-section" id="earthquake">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="h1">
+                    <i class="fas fa-house-damage me-3"></i>Earthquake Safety
+                </h2>
+                <button class="btn btn-outline-primary btn-sm" onclick="window.print()">
+                    <i class="fas fa-print me-1"></i>Print Guide
+                </button>
+            </div>
+
+            <div class="row g-4">
+                <!-- Before Card -->
+                <div class="col-lg-4">
+                    <div class="safety-card before h-100">
+                        <div class="card-header d-flex align-items-center">
+                            <i class="fas fa-calendar-check me-2"></i> Before Earthquake
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-unstyled">
+                                <li class="checklist-item">Secure heavy furniture and shelves to walls</li>
+                                <li class="checklist-item">Store emergency kit (first-aid, water, flashlight, battery radio)</li>
+                                <li class="checklist-item">Identify safe spots indoors (under sturdy tables, away from windows)</li>
+                                <li class="checklist-item">Practice "Drop, Cover, and Hold On" drills with family</li>
+                                <li class="checklist-item">Keep important documents in waterproof, accessible containers</li>
+                                <li class="checklist-item">Learn how to shut off gas, water, and electricity</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- During Card -->
+                <div class="col-lg-4">
+                    <div class="safety-card during h-100">
+                        <div class="card-header d-flex align-items-center">
+                            <i class="fas fa-exclamation-triangle me-2"></i> During Earthquake
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-unstyled">
+                                <li class="checklist-item">Drop to the ground immediately</li>
+                                <li class="checklist-item">Take cover under sturdy furniture</li>
+                                <li class="checklist-item">Hold on until shaking stops</li>
+                                <li class="checklist-item">Stay away from windows and glass</li>
+                                <li class="checklist-item">If outdoors, move to open area away from buildings</li>
+                                <li class="checklist-item">If driving, pull over and stay in vehicle</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- After Card -->
+                <div class="col-lg-4">
+                    <div class="safety-card after h-100">
+                        <div class="card-header d-flex align-items-center">
+                            <i class="fas fa-first-aid me-2"></i> After Earthquake
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-unstyled">
+                                <li class="checklist-item">Check for injuries and provide first aid</li>
+                                <li class="checklist-item">Be prepared for aftershocks</li>
+                                <li class="checklist-item">Inspect for gas leaks and electrical damage</li>
+                                <li class="checklist-item">Listen to battery-powered radio for updates</li>
+                                <li class="checklist-item">Wear sturdy shoes to protect from debris</li>
+                                <li class="checklist-item">Help neighbors who may need assistance</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Flood Section -->
+        <section class="disaster-section" id="flood">
+            <h2 class="h1">
+                <i class="fas fa-water me-3"></i>Flood Safety
+            </h2>
+
+            <div class="row g-4">
+                <!-- Before Card -->
+                <div class="col-lg-4">
+                    <div class="safety-card before h-100">
+                        <div class="card-header d-flex align-items-center">
+                            <i class="fas fa-calendar-check me-2"></i> Before Flood
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-unstyled">
+                                <li class="checklist-item">Know your local flood evacuation routes</li>
+                                <li class="checklist-item">Store valuables in waterproof containers</li>
+                                <li class="checklist-item">Keep emergency supplies ready (food, water, flashlight)</li>
+                                <li class="checklist-item">Elevate electrical appliances in flood-prone areas</li>
+                                <li class="checklist-item">Install check valves in sewer traps</li>
+                                <li class="checklist-item">Purchase flood insurance if in risk area</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- During Card -->
+                <div class="col-lg-4">
+                    <div class="safety-card during h-100">
+                        <div class="card-header d-flex align-items-center">
+                            <i class="fas fa-exclamation-triangle me-2"></i> During Flood
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-unstyled">
+                                <li class="checklist-item">Move to higher ground immediately</li>
+                                <li class="checklist-item">Avoid walking/driving through floodwaters</li>
+                                <li class="checklist-item">Disconnect electrical appliances if safe</li>
+                                <li class="checklist-item">Follow official evacuation instructions</li>
+                                <li class="checklist-item">Keep children and pets close</li>
+                                <li class="checklist-item">Don't touch electrical equipment if wet</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- After Card -->
+                <div class="col-lg-4">
+                    <div class="safety-card after h-100">
+                        <div class="card-header d-flex align-items-center">
+                            <i class="fas fa-first-aid me-2"></i> After Flood
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-unstyled">
+                                <li class="checklist-item">Return home only when authorities say it's safe</li>
+                                <li class="checklist-item">Avoid contact with floodwater (may be contaminated)</li>
+                                <li class="checklist-item">Clean and disinfect everything that got wet</li>
+                                <li class="checklist-item">Discard food that came in contact with floodwater</li>
+                                <li class="checklist-item">Inspect for structural damage before entering buildings</li>
+                                <li class="checklist-item">Report damaged utilities to authorities</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Additional Resources -->
+        <section class="mt-5">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <h3 class="h4 mb-4">
+                        <i class="fas fa-download me-2"></i>Additional Resources
+                    </h3>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <a href="#" class="btn btn-outline-primary w-100">
+                                <i class="fas fa-file-pdf me-2"></i>Download Earthquake Safety PDF
+                            </a>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <a href="#" class="btn btn-outline-primary w-100">
+                                <i class="fas fa-file-pdf me-2"></i>Download Flood Safety PDF
+                            </a>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <a href="contacts.html" class="btn btn-outline-danger w-100">
+                                <i class="fas fa-phone-alt me-2"></i>Emergency Contacts List
+                            </a>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <a href="shelters.html" class="btn btn-outline-success w-100">
+                                <i class="fas fa-map-marked-alt me-2"></i>Nearest Shelters Map
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 mb-3 mb-md-0">
+                    <h3 class="h5">
+                        <i class="fas fa-shield-alt me-2"></i>SafeNepal
+                    </h3>
+                    <p class="small mb-0">Your trusted disaster preparedness resource</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="small mb-0">&copy; 2025 SafeNepal. All rights reserved.</p>
+                    <p class="small mb-0">Last updated: <span id="last-updated">June 2023</span></p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Set last updated date automatically
+        document.getElementById('last-updated').textContent = new Date().toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long'
+        });
+
+        // Enable print functionality
+        function printGuide(sectionId) {
+            const printContent = document.getElementById(sectionId).innerHTML;
+            const originalContent = document.body.innerHTML;
+
+            document.body.innerHTML = `
+                <style>
+                    body { font-family: Arial, sans-serif; padding: 20px; }
+                    h1, h2 { color: #333; }
+                    .safety-card { break-inside: avoid; margin-bottom: 20px; }
+                    @page { size: auto; margin: 10mm; }
+                </style>
+                ${printContent}
+                <div class="text-center mt-4">
+                    <small>Printed from SafeNepal.org on ${new Date().toLocaleDateString()}</small>
+                </div>
+            `;
+
+            window.print();
+            document.body.innerHTML = originalContent;
+        }
+
+        // Add service worker for offline capability
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js').then(registration => {
+                    console.log('ServiceWorker registration successful');
+                }).catch(err => {
+                    console.log('ServiceWorker registration failed: ', err);
+                });
+            });
+        }
+    </script>
+</body>
+
+</html>

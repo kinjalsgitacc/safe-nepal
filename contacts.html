@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emergency Contacts | SafeNepal</title>
+    <meta name="description" content="Manage your emergency contacts for disaster preparedness">
+
+    <!-- Preload critical resources -->
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" as="style">
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style">
+
+    <!-- CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+         :root {
+            --primary: #2563eb;
+            --primary-light: #dbeafe;
+            --danger: #dc2626;
+            --danger-light: #fee2e2;
+            --success: #16a34a;
+            --warning: #d97706;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8fafc;
+            line-height: 1.6;
+        }
+        /* Accessibility */
+        
+         :focus-visible {
+            outline: 3px solid var(--primary);
+            outline-offset: 2px;
+        }
+        /* Navbar */
+        
+        .navbar {
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        /* Page Header */
+        
+        .page-header {
+            background: linear-gradient(135deg, var(--primary) 0%, #1e40af 100%);
+            color: white;
+            padding: 3rem 0;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+        /* Section Titles */
+        
+        .section-title {
+            position: relative;
+            padding-left: 1rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+        
+        .section-title::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+        /* Contact Cards */
+        
+        .contact-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.25rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: all 0.3s ease;
+            height: 100%;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .contact-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        
+        .contact-card.essential {
+            border-left-color: var(--danger);
+        }
+        
+        .contact-card i {
+            font-size: 1.5rem;
+            width: 40px;
+            height: 40px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background-color: rgba(37, 99, 235, 0.1);
+            color: var(--primary);
+        }
+        
+        .contact-card.essential i {
+            background-color: rgba(220, 38, 38, 0.1);
+            color: var(--danger);
+        }
+        
+        .contact-info h6 {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        
+        .contact-info a {
+            color: #4b5563;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        
+        .contact-info a:hover {
+            color: var(--primary);
+            text-decoration: underline;
+        }
+        /* Remove Button */
+        
+        .remove-btn {
+            background: transparent;
+            border: none;
+            color: var(--danger);
+            width: 32px;
+            height: 32px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.2s;
+        }
+        
+        .remove-btn:hover {
+            background-color: var(--danger-light);
+        }
+        /* Add Contact Form */
+        
+        .add-contact-form {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        /* Empty State */
+        
+        .empty-state {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        
+        .empty-state i {
+            font-size: 3rem;
+            color: #9ca3af;
+            margin-bottom: 1rem;
+        }
+        /* Toast Notification */
+        
+        .toast-container {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 1100;
+        }
+        /* Dark Mode */
+        
+        @media (prefers-color-scheme: dark) {
+            body {
+                background-color: #1e293b;
+                color: #e2e8f0;
+            }
+            .contact-card,
+            .add-contact-form,
+            .empty-state {
+                background-color: #334155;
+                color: #e2e8f0;
+            }
+            .contact-info a {
+                color: #e2e8f0;
+            }
+            .contact-info a:hover {
+                color: #93c5fd;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Skip to content link -->
+    <a href="#main-content" class="visually-hidden-focusable">Skip to main content</a>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary py-3">
+        <div class="container">
+            <a class="navbar-brand fw-bold fs-3" href="index.html">
+                <i class="fas fa-shield-alt me-2"></i>SafeNepal
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto justify-content-center">
+
+                    <li class="nav-item"><a class="nav-link " href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="safety.html">Safety Guides</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="contacts.html">Emergency Contacts</a></li>
+                    <li class="nav-item"><a class="nav-link" href="shelters.html">Shelters</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <header class="page-header">
+        <div class="container text-center ms-auto">
+            <h1 class="display-5 fw-bold mb-3">Emergency Contacts</h1>
+            <p class="lead mb-0">Quick access to essential services and your personal emergency network</p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main id="main-content" class="container mb-5">
+        <!-- Essential Contacts -->
+        <section class="mb-5">
+            <h2 class="section-title">Essential Services</h2>
+            <div class="row g-3">
+                <div class="col-md-4 col-sm-6">
+                    <div class="contact-card essential d-flex align-items-center">
+                        <i class="fas fa-shield-alt"></i>
+                        <div class="contact-info ms-3">
+                            <h6>Police Emergency</h6>
+                            <a href="tel:100" class="d-block">100</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-6">
+                    <div class="contact-card essential d-flex align-items-center">
+                        <i class="fas fa-ambulance"></i>
+                        <div class="contact-info ms-3">
+                            <h6>Ambulance</h6>
+                            <a href="tel:102" class="d-block">102</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-6">
+                    <div class="contact-card essential d-flex align-items-center">
+                        <i class="fas fa-fire-extinguisher"></i>
+                        <div class="contact-info ms-3">
+                            <h6>Fire Brigade</h6>
+                            <a href="tel:101" class="d-block">101</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-6">
+                    <div class="contact-card essential d-flex align-items-center">
+                        <i class="fas fa-hospital"></i>
+                        <div class="contact-info ms-3">
+                            <h6>Red Cross</h6>
+                            <a href="tel:014270650" class="d-block">014-270650</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-6">
+                    <div class="contact-card essential d-flex align-items-center">
+                        <i class="fas fa-phone-alt"></i>
+                        <div class="contact-info ms-3">
+                            <h6>Disaster Management</h6>
+                            <a href="tel:014215530" class="d-block">014-215530</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-6">
+                    <div class="contact-card essential d-flex align-items-center">
+                        <i class="fas fa-heartbeat"></i>
+                        <div class="contact-info ms-3">
+                            <h6>Emergency Health</h6>
+                            <a href="tel:014266194" class="d-block">014-266194</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Personal Contacts -->
+        <section>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h2 class="section-title">Your Emergency Contacts</h2>
+                <button class="btn btn-sm btn-outline-primary" id="exportBtn">
+                    <i class="fas fa-download me-1"></i>Export
+                </button>
+            </div>
+
+            <div id="personalContacts" class="row g-3 mb-4">
+                <!-- Contacts will be loaded here -->
+            </div>
+
+            <!-- Empty State -->
+            <div id="emptyState" class="empty-state">
+                <i class="fas fa-user-friends"></i>
+                <h3 class="h5 mb-2">No contacts added yet</h3>
+                <p class="text-muted mb-0">Add your emergency contacts below</p>
+            </div>
+
+            <!-- Add Contact Form -->
+            <div class="add-contact-form mt-4">
+                <h3 class="h5 mb-3">Add New Contact</h3>
+                <form id="contactForm" class="row g-2">
+                    <div class="col-md-4">
+                        <label for="nameInput" class="form-label visually-hidden">Name</label>
+                        <input type="text" id="nameInput" class="form-control" placeholder="Contact Name" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="phoneInput" class="form-label visually-hidden">Phone</label>
+                        <input type="tel" id="phoneInput" class="form-control" placeholder="Phone Number" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="relationInput" class="form-label visually-hidden">Relation</label>
+                        <select id="relationInput" class="form-select">
+                            <option value="">Select Relation</option>
+                            <option value="family">Family</option>
+                            <option value="friend">Friend</option>
+                            <option value="doctor">Doctor</option>
+                            <option value="neighbor">Neighbor</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-plus me-1"></i>Add Contact
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- Toast Notification -->
+    <div class="toast-container">
+        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <strong class="me-auto" id="toastTitle">Notification</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body" id="toastMessage">
+                <!-- Message will appear here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 mb-3 mb-md-0">
+                    <h3 class="h5">
+                        <i class="fas fa-shield-alt me-2"></i>SafeNepal
+                    </h3>
+                    <p class="small mb-0">Your trusted disaster preparedness resource</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="small mb-0">&copy; 2025 SafeNepal. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // DOM Elements
+        const contactForm = document.getElementById('contactForm');
+        const personalContacts = document.getElementById('personalContacts');
+        const emptyState = document.getElementById('emptyState');
+        const toastLive = document.getElementById('liveToast');
+        const toast = new bootstrap.Toast(toastLive);
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadContacts();
+            setupEventListeners();
+        });
+
+        function setupEventListeners() {
+            // Form submission
+            contactForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                addContact();
+            });
+
+            // Export button
+            document.getElementById('exportBtn').addEventListener('click', exportContacts);
+        }
+
+        // Load contacts from localStorage
+        function loadContacts() {
+            const contacts = JSON.parse(localStorage.getItem('contacts')) || [];
+
+            if (contacts.length === 0) {
+                emptyState.style.display = 'block';
+                personalContacts.style.display = 'none';
+                return;
+            }
+
+            emptyState.style.display = 'none';
+            personalContacts.style.display = 'flex';
+            personalContacts.innerHTML = '';
+
+            contacts.forEach((contact, index) => {
+                        const contactCard = document.createElement('div');
+                        contactCard.className = 'col-md-4 col-sm-6';
+                        contactCard.innerHTML = `
+                    <div class="contact-card d-flex align-items-center justify-content-between">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-user${contact.relation === 'family' ? '' : contact.relation === 'doctor' ? '-md' : '-friends'}"></i>
+                            <div class="contact-info ms-3">
+                                <h6>${contact.name}</h6>
+                                <div class="d-flex flex-column">
+                                    <a href="tel:${contact.phone}">${contact.phone}</a>
+                                    ${contact.relation ? `<small class="text-muted">${contact.relation.charAt(0).toUpperCase() + contact.relation.slice(1)}</small>` : ''}
+                                </div>
+                            </div>
+                        </div>
+                        <button class="remove-btn" onclick="removeContact(${index})" aria-label="Remove contact">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+                personalContacts.appendChild(contactCard);
+            });
+        }
+        
+        // Add new contact
+        function addContact() {
+            const name = document.getElementById('nameInput').value.trim();
+            const phone = document.getElementById('phoneInput').value.trim();
+            const relation = document.getElementById('relationInput').value;
+            
+            if (!name || !phone) {
+                showToast('Error', 'Please enter both name and phone number', 'danger');
+                return;
+            }
+            
+            const contacts = JSON.parse(localStorage.getItem('contacts')) || [];
+            contacts.push({ name, phone, relation });
+            localStorage.setItem('contacts', JSON.stringify(contacts));
+            
+            // Reset form
+            contactForm.reset();
+            loadContacts();
+            showToast('Success', 'Contact added successfully', 'success');
+        }
+        
+        // Remove contact
+        function removeContact(index) {
+            const contacts = JSON.parse(localStorage.getItem('contacts')) || [];
+            const removedContact = contacts.splice(index, 1);
+            localStorage.setItem('contacts', JSON.stringify(contacts));
+            loadContacts();
+            showToast('Removed', `Deleted ${removedContact[0].name}`, 'warning');
+        }
+        
+        // Export contacts
+        function exportContacts() {
+            const contacts = JSON.parse(localStorage.getItem('contacts')) || [];
+            
+            if (contacts.length === 0) {
+                showToast('Error', 'No contacts to export', 'danger');
+                return;
+            }
+            
+            let csv = 'Name,Phone Number,Relation\n';
+            contacts.forEach(contact => {
+                csv += `"${contact.name}","${contact.phone}","${contact.relation || ''}"\n`;
+            });
+            
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'emergency-contacts.csv';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            showToast('Exported', 'Contacts downloaded as CSV', 'success');
+        }
+        
+        // Show toast notification
+        function showToast(title, message, type) {
+            document.getElementById('toastTitle').textContent = title;
+            document.getElementById('toastMessage').textContent = message;
+            
+            const header = toastLive.querySelector('.toast-header');
+            header.className = `toast-header text-white bg-${type}`;
+            
+            toast.show();
+        }
+    </script>
+</body>
+
+</html>
