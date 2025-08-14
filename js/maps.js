@@ -302,21 +302,119 @@ const mapsManager = {
     },
     
     // Load shelter data
-    loadShelters() {
-        // In a real application, this would fetch data from an API or database
-        // For this example, we'll use sample data
-        const shelters = [
-            { name: 'Kathmandu Emergency Shelter', lat: 27.7172, lng: 85.3240, capacity: 500, type: 'School' },
-            { name: 'Bhaktapur Relief Center', lat: 27.6710, lng: 85.4298, capacity: 300, type: 'Community Center' },
-            { name: 'Lalitpur Safe Haven', lat: 27.6588, lng: 85.3247, capacity: 250, type: 'Government Building' },
-            { name: 'Pokhara Evacuation Center', lat: 28.2096, lng: 83.9856, capacity: 400, type: 'Stadium' },
-            { name: 'Chitwan Shelter Complex', lat: 27.5291, lng: 84.3542, capacity: 350, type: 'School' }
-        ];
-        
-        shelters.forEach(shelter => {
-            this.addShelterMarker(shelter);
-        });
-    },
+    // tries multiple Overpass endpoints, increases radius, and gives better user feedback
+async function loadShelters() {
+    if (!userLocation) {
+        showLoadingState(false, 'Enable location to find nearby shelters', true);
+        return;
+    }
+
+    // List of Overpass endpoints (will try them in order)
+    const OVERPASS_ENDPOINTS = [
+        'https://overpass-api.de/api/interpreter',
+        'https://lz4.overpass-api.de/api/interpreter',
+        'https://overpass.kumi.systems/api/interpreter'
+    ];
+    let triedEndpoints = 0;
+    let radius = CONFIG.SHELTER_RADIUS;   // Start with your configured radius
+    let maxRadius = 50000;                // 50km max
+    let maxAttempts = OVERPASS_ENDPOINTS.length;
+
+    async function tryFetch(endpoint) {
+        try {
+            showLoadingState(true, `Finding nearby shelters... (radius: ${radius / 1000} km)`);
+            const [lat, lon] = userLocation;
+            const query = `
+                [out:json][timeout:25];
+                (
+                  node["amenity"="shelter"](around:${radius},${lat},${lon});
+                  node["emergency"="shelter"](around:${radius},${lat},${lon});
+                  way["amenity"="shelter"](around:${radius},${lat},${lon});
+                  way["emergency"="shelter"](around:${radius},${lat},${lon});
+                );
+                out center;
+            `;
+
+            const response = await fetch(endpoint, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: `data=${encodeURIComponent(query)}`
+            });
+
+            if (!response.ok) throw new Error(`Overpass API error: ${response.status}`);
+            const data = await response.json();
+            shelters = [];
+
+            if (data.elements && data.elements.length > 0) {
+                // Process shelter data
+                data.elements.forEach(element => {
+                    let shelter = {
+                        id: element.id,
+                        type: element.type,
+                        name: (element.tags && element.tags.name) || 'Unnamed Shelter',
+                        lat: element.type === 'node' ? element.lat : (element.center ? element.center.lat : undefined),
+                        lon: element.type === 'node' ? element.lon : (element.center ? element.center.lon : undefined),
+                        tags: element.tags || {}
+                    };
+                    if (shelter.lat && shelter.lon) {
+                        shelter.distance = calculateDistance(
+                            userLocation[0], userLocation[1],
+                            shelter.lat, shelter.lon
+                        );
+                        shelters.push(shelter);
+                    }
+                });
+
+                // Sort by distance
+                shelters.sort((a, b) => a.distance - b.distance);
+
+                // Render shelters
+                renderShelters();
+                showLoadingState(false);
+                return true;
+            } else {
+                // No shelters found, try increasing radius if possible
+                if (radius < maxRadius) {
+                    radius = Math.min(radius * 2, maxRadius);
+                    return false; // Will try again with larger radius
+                } else {
+                    showLoadingState(false, 'No shelters found within 50km. Try checking official sources.', false);
+                    return true; // Stop trying
+                }
+            }
+        } catch (error) {
+            console.error('Error loading shelters:', error);
+            return false; // Will try next endpoint
+        }
+    }
+
+    // Try each endpoint up to maxAttempts
+    for (let i = 0; i < OVERPASS_ENDPOINTS.length && triedEndpoints < maxAttempts; i++) {
+        let success = await tryFetch(OVERPASS_ENDPOINTS[i]);
+        if (success) return;
+        triedEndpoints++;
+    }
+
+    // If all endpoints failed
+    showLoadingState(false, 'Failed to load shelters. Overpass API may be down or your network is offline. Please try again.', true);
+}
+
+/* 
+Helper: calculates distance between two lat/lon (Haversine formula)
+If your file already has this, you don't need to duplicate!
+*/
+function calculateDistance(lat1, lon1, lat2, lon2) {
+    const R = 6371000; // Earth radius in meters
+    const φ1 = lat1 * Math.PI / 180;
+    const φ2 = lat2 * Math.PI / 180;
+    const Δφ = (lat2 - lat1) * Math.PI / 180;
+    const Δλ = (lon2 - lon1) * Math.PI / 180;
+    const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+        Math.cos(φ1) * Math.cos(φ2) *
+        Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c;
+}
     
     // Load hospital data
     loadHospitals() {
