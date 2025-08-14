@@ -1,0 +1,104 @@
+{
+  "name": "SafeNepal - Disaster Preparedness Hub",
+  "short_name": "SafeNepal",
+  "description": "Real-time disaster alerts and emergency resources for Nepal",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2563eb",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/images/icon-72x72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/images/icon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/images/icon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/images/icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/images/icon-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/images/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/images/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/images/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Emergency Contacts",
+      "short_name": "Contacts",
+      "description": "View emergency contacts",
+      "url": "/contacts.html",
+      "icons": [{ "src": "/images/contacts-icon.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Safety Guides",
+      "short_name": "Safety",
+      "description": "Access safety guides",
+      "url": "/safety.html",
+      "icons": [{ "src": "/images/safety-icon.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Emergency Shelters",
+      "short_name": "Shelters",
+      "description": "Find nearby shelters",
+      "url": "/shelters.html",
+      "icons": [{ "src": "/images/shelters-icon.png", "sizes": "192x192" }]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/images/screenshot1.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "platform": "wide",
+      "label": "SafeNepal Home Screen"
+    },
+    {
+      "src": "/images/screenshot2.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "platform": "wide",
+      "label": "Emergency Shelters Map"
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "categories": ["emergency", "safety", "utilities"],
+  "lang": "en-US",
+  "dir": "ltr"
+}

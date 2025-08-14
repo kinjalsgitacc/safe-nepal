@@ -1,21 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Real-time disaster alerts and emergency resources for Nepal">
     <title>SafeNepal | Disaster Preparedness Hub</title>
-
-    <!-- Preload critical resources -->
-    <link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" as="style">
-    <link rel="preload" href="style.css" as="style">
-
-    <!-- CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
     <link rel="stylesheet" href="style.css">
+    
+    <!-- Manifest for PWA -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- iOS support -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="SafeNepal">
+    <link rel="apple-touch-icon" href="/images/icons/icon-152x152.png">
     <style>
                :root {
             --primary: #2563eb;
@@ -51,7 +61,7 @@ box-shadow:  14px 14px 36px #b7ae9b,
         
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #f8fafc;
+            background-color: #ffffff;
             line-height: 1.6;
         }
         /* Accessibility */
@@ -64,6 +74,37 @@ box-shadow:  14px 14px 36px #b7ae9b,
         
         .navbar {
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Hero Section */
+        .hero-section {
+            min-height: 600px;
+            display: flex;
+            align-items: center;
+        }
+
+        .rounded-4 {
+            border-radius: 0.75rem;
+        }
+
+        .icon-circle {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+        
+        /* Cards with hover effects */
+        .hover-lift {
+            transition: all 0.3s ease;
+        }
+        
+        .hover-lift:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 1rem 3rem rgba(0,0,0,.175)!important;
         }
 
         /* Add to your style.css */
@@ -83,78 +124,254 @@ box-shadow:  14px 14px 36px #b7ae9b,
     <!-- Skip to content link for accessibility -->
     <a href="#main-content" class="visually-hidden-focusable">Skip to main content</a>
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary py-3">
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
         <div class="container">
-            <a class="navbar-brand fw-bold fs-3" href="index.html">
-                <i class="fas fa-shield-alt me-2"></i>SafeNepal
+            <a class="navbar-brand d-flex align-items-center" href="index.html">
+                <i class="fas fa-shield-alt me-2"></i>
+                <span>SafeNepal</span>
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mx-auto justify-content-center">
-
                     <li class="nav-item"><a class="nav-link active" href="index.html">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="safety.html">Safety Guides</a></li>
                     <li class="nav-item"><a class="nav-link" href="contacts.html">Emergency Contacts</a></li>
                     <li class="nav-item"><a class="nav-link" href="shelters.html">Shelters</a></li>
+                    <li class="nav-item"><a class="nav-link" href="community-reports.html">Community Reports</a></li>
+                    <li class="nav-item"><a class="nav-link" href="simulation.html">Simulation</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-globe me-1"></i> <span class="language-text">English</span>
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="languageDropdown">
+                            <li><a class="dropdown-item language-option" href="#" data-lang="en">English</a></li>
+                            <li><a class="dropdown-item language-option" href="#" data-lang="ne">नेपाली</a></li>
+                        </ul>
+                    </li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <main id="main-content" class="container py-4">
-        <!-- Hero Alert Section -->
-        <section class="row g-3 mb-5">
-            <!-- Alert Box -->
-            <div class="col-lg-6">
-                <div class="alert alert-danger border-0 shadow-lg p-4 rounded-3">
-                    <div class="d-flex align-items-center mb-3">
-                        <i class="fas fa-triangle-exclamation fa-2x me-3"></i>
-                        <h2 class="h3 mb-0">FLOOD WARNING</h1>
+    <!-- Hero Section with Background Image -->
+    <div class="hero-section position-relative mb-5">
+        <div class="hero-bg position-absolute w-100 h-100" style="background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%); background-size: cover; z-index: -1;"></div>
+        <div class="container py-5">
+            <div class="row align-items-center py-5">
+                <div class="col-lg-7 text-white mb-5 mb-lg-0">
+                    <h1 class="display-4 fw-bold mb-3">Stay Safe During Disasters</h1>
+                    <p class="lead mb-4">Real-time alerts, emergency resources, and safety guides for Nepal's communities.</p>
+                    <div class="d-flex flex-wrap gap-3">
+                        <a href="safety.html" class="btn btn-primary btn-lg">
+                            <i class="fas fa-shield-alt me-2"></i>Safety Guides
+                        </a>
+                        <a href="shelters.html" class="btn btn-outline-light btn-lg">
+                            <i class="fas fa-home me-2"></i>Find Shelters
+                        </a>
                     </div>
-                    <ul class="list-unstyled mb-4">
-                        <li class="mb-2"><strong>Location:</strong> Sindhupalchok District</li>
-                        <li class="mb-2"><strong>Time:</strong> 14:30 NST</li>
-                        <li><strong>Severity:</strong> High Risk</li>
-                    </ul>
-                    <a href="safety.html#floods" class="btn btn-light text-danger fw-bold">
-                        <i class="fas fa-book-open me-2"></i>Safety Instructions
-                    </a>
+                </div>
+                <div class="col-lg-5">
+                    <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+                        <div class="card-header bg-danger text-white py-3">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-triangle-exclamation fa-2x me-3"></i>
+                                <h2 class="h4 mb-0">ACTIVE ALERT: FLOOD WARNING</h2>
+                            </div>
+                        </div>
+                        <div class="card-body p-4">
+                            <ul class="list-unstyled mb-4">
+                                <li class="mb-3 d-flex align-items-center">
+                                    <i class="fas fa-map-marker-alt text-danger me-3"></i>
+                                    <div>
+                                        <small class="text-muted d-block">LOCATION</small>
+                                        <strong>Sindhupalchok District</strong>
+                                    </div>
+                                </li>
+                                <li class="mb-3 d-flex align-items-center">
+                                    <i class="fas fa-clock text-danger me-3"></i>
+                                    <div>
+                                        <small class="text-muted d-block">ISSUED AT</small>
+                                        <strong>14:30 NST</strong>
+                                    </div>
+                                </li>
+                                <li class="d-flex align-items-center">
+                                    <i class="fas fa-exclamation-circle text-danger me-3"></i>
+                                    <div>
+                                        <small class="text-muted d-block">SEVERITY</small>
+                                        <strong>High Risk</strong>
+                                    </div>
+                                </li>
+                            </ul>
+                            <a href="safety.html#floods" class="btn btn-danger w-100 py-2">
+                                <i class="fas fa-book-open me-2"></i>View Safety Instructions
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
-
-            <!-- Action Buttons -->
-            <div class="col-lg-6">
-                <div class="row g-3">
-                    <div class="col-md-6">
-                        <div class="card h-100 border-0 bg-success bg-opacity-10 shadow-sm">
-                            <div class="card-body">
-                                <h5 class=" mb-3 text-success">
-                                    <i class="fas fa-crosshairs me-2"></i>Need Help?
-                                </h3>
-                                <div class="d-grid gap-2">
-                                    <a href="safety.html" class="btn btn-success">
-                                        <i class="fas fa-book me-2"></i>Safety Guide
-                                    </a>
-                                    <a href="contacts.html" class="btn btn-outline-success">
-                                        <i class="fas fa-phone me-2"></i>Emergency Contacts
-                                    </a>
-                                </div>
+        </div>
+    </div>
+    
+    <main id="main-content" class="container py-4">
+        <!-- Quick Action Buttons -->
+        <section class="quick-actions mb-5">
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm hover-lift">
+                        <div class="card-body p-4 text-center">
+                            <div class="icon-circle bg-primary bg-opacity-10 text-primary mx-auto mb-3">
+                                <i class="fas fa-crosshairs fa-2x"></i>
+                            </div>
+                            <h3 class="h5 mb-3">Need Help?</h3>
+                            <p class="text-muted mb-4">Access emergency resources and safety information.</p>
+                            <div class="d-grid gap-2">
+                                <a href="safety.html" class="btn btn-primary">
+                                    <i class="fas fa-book me-2"></i>Safety Guides
+                                </a>
                             </div>
                         </div>
                     </div>
-
-                    <div class="col-md-6">
-                        <div class="card h-100 border-0 bg-warning bg-opacity-10 shadow-sm">
-                            <div class="card-body">
-                                <h5 class=" mb-3 text-warning">
-                                    <i class="fas fa-flag me-2"></i>See Disaster?
-                                </h3>
-                                <button id="reportDisasterBtn" class="btn btn-warning w-100" data-bs-toggle="modal" data-bs-target="#reportModal">
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm hover-lift">
+                        <div class="card-body p-4 text-center">
+                            <div class="icon-circle bg-success bg-opacity-10 text-success mx-auto mb-3">
+                                <i class="fas fa-phone fa-2x"></i>
+                            </div>
+                            <h3 class="h5 mb-3">Emergency Contacts</h3>
+                            <p class="text-muted mb-4">Quick access to emergency services and hotlines.</p>
+                            <div class="d-grid gap-2">
+                                <a href="contacts.html" class="btn btn-success">
+                                    <i class="fas fa-phone me-2"></i>View Contacts
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm hover-lift">
+                        <div class="card-body p-4 text-center">
+                            <div class="icon-circle bg-warning bg-opacity-10 text-warning mx-auto mb-3">
+                                <i class="fas fa-bullhorn fa-2x"></i>
+                            </div>
+                            <h3 class="h5 mb-3">Report Disaster</h3>
+                            <p class="text-muted mb-4">Help others by reporting disasters in your area.</p>
+                            <div class="d-grid gap-2">
+                                <button id="reportDisasterBtn" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#reportModal">
                                     <i class="fas fa-bullhorn me-2"></i>Report Now
                                 </button>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Emergency Resources Section -->
+        <section class="disaster-resources mb-5">
+            <div class="section-header d-flex align-items-center justify-content-between mb-4">
+                <h2 class="h3 mb-0">Disaster Resources</h2>
+                <a href="safety.html" class="text-decoration-none">View all resources <i class="fas fa-arrow-right ms-1"></i></a>
+            </div>
+            
+            <div class="row g-4">
+                <!-- Earthquake Resources -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 border-0 shadow-sm hover-lift">
+                        <div class="card-body p-4">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="bg-danger bg-opacity-10 p-3 rounded-circle me-3">
+                                    <i class="fas fa-house-crack text-danger"></i>
+                                </div>
+                                <h3 class="h5 mb-0">Earthquake</h3>
+                            </div>
+                            <p class="card-text text-muted mb-3">Latest seismic activity and safety resources for earthquakes in Nepal.</p>
+                            <div class="disaster-stats d-flex justify-content-between mb-3 p-2 bg-light rounded">
+                                <div class="text-center">
+                                    <small class="d-block text-muted">RECENT</small>
+                                    <span class="fw-bold">3</span>
+                                </div>
+                                <div class="text-center">
+                                    <small class="d-block text-muted">MAG</small>
+                                    <span class="fw-bold">4.2</span>
+                                </div>
+                                <div class="text-center">
+                                    <small class="d-block text-muted">LOCATION</small>
+                                    <span class="fw-bold">Kathmandu</span>
+                                </div>
+                            </div>
+                            <a href="safety.html#earthquakes" class="btn btn-outline-danger w-100">
+                                <i class="fas fa-info-circle me-2"></i>Safety Guide
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Flood Resources -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 border-0 shadow-sm hover-lift">
+                        <div class="card-body p-4">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="bg-primary bg-opacity-10 p-3 rounded-circle me-3">
+                                    <i class="fas fa-water text-primary"></i>
+                                </div>
+                                <h3 class="h5 mb-0">Floods</h3>
+                            </div>
+                            <p class="card-text text-muted mb-3">Monsoon flood warnings, affected areas, and evacuation information.</p>
+                            <div class="disaster-stats d-flex justify-content-between mb-3 p-2 bg-light rounded">
+                                <div class="text-center">
+                                    <small class="d-block text-muted">ALERTS</small>
+                                    <span class="fw-bold text-danger">2</span>
+                                </div>
+                                <div class="text-center">
+                                    <small class="d-block text-muted">RISK</small>
+                                    <span class="fw-bold">High</span>
+                                </div>
+                                <div class="text-center">
+                                    <small class="d-block text-muted">AREAS</small>
+                                    <span class="fw-bold">3</span>
+                                </div>
+                            </div>
+                            <a href="safety.html#floods" class="btn btn-outline-primary w-100">
+                                <i class="fas fa-info-circle me-2"></i>Safety Guide
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Landslide Resources -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 border-0 shadow-sm hover-lift">
+                        <div class="card-body p-4">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="bg-warning bg-opacity-10 p-3 rounded-circle me-3">
+                                    <i class="fas fa-mountain text-warning"></i>
+                                </div>
+                                <h3 class="h5 mb-0">Landslides</h3>
+                            </div>
+                            <p class="card-text text-muted mb-3">High-risk areas, warning signs, and safety procedures for landslides.</p>
+                            <div class="disaster-stats d-flex justify-content-between mb-3 p-2 bg-light rounded">
+                                <div class="text-center">
+                                    <small class="d-block text-muted">ALERTS</small>
+                                    <span class="fw-bold">1</span>
+                                </div>
+                                <div class="text-center">
+                                    <small class="d-block text-muted">RISK</small>
+                                    <span class="fw-bold">Medium</span>
+                                </div>
+                                <div class="text-center">
+                                    <small class="d-block text-muted">AREAS</small>
+                                    <span class="fw-bold">5</span>
+                                </div>
+                            </div>
+                            <a href="safety.html#landslides" class="btn btn-outline-warning w-100">
+                                <i class="fas fa-info-circle me-2"></i>Safety Guide
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -287,55 +504,109 @@ box-shadow:  14px 14px 36px #b7ae9b,
                 </div>
             </div>
         </section>
-    </main>
-
-    <footer class="bg-primary text-white pt-5 pb-3">
-        <div class="container">
-            <div class="row">
-                <!-- Logo & Description -->
-                <div class="col-md-4 mb-4">
-                    <h3 class="h5 mb-3">
-                        <i class="fas fa-shield-alt me-2"></i>SafeNepal
-                    </h3>
-                    <p class="small">
-                        Your trusted disaster preparedness partner, working to keep communities safe and informed during emergencies in Nepal.
-                    </p>
+        
+        <!-- Shelters Map Section -->
+        <section class="mb-5">
+            <div class="section-header d-flex align-items-center justify-content-between mb-4">
+                <h2 class="h3 mb-0">Nearby Shelters</h2>
+                <a href="shelters.html" class="text-decoration-none">View all shelters <i class="fas fa-arrow-right ms-1"></i></a>
+            </div>
+            <div class="card border-0 shadow-sm overflow-hidden rounded-4">
+                <div class="card-body p-0">
+                    <div id="mini-map" style="height: 400px;"></div>
                 </div>
-    
-                <!-- Quick Links -->
-                <div class="col-md-4 mb-4">
-                    <h5 class="mb-3">Quick Links</h5>
-                    <ul class="list-unstyled small">
-                        <li><a href="index.html" class="text-white text-decoration-none">Home</a></li>
-                        <li><a href="safety.html" class="text-white text-decoration-none">Safety guides</a></li>
-                        <li><a href="contacts.html" class="text-white text-decoration-none">Emergency contacts</a></li>
-                        <li><a href="shelters.html" class="text-white text-decoration-none">Shelters</a></li>
-                    </ul>
-                </div>
-    
-                <!-- Contact Info -->
-                <div class="col-md-4 mb-4">
-                    <h5 class="mb-3">Contact Us</h5>
-                    <p class="small mb-1"><i class="fas fa-map-marker-alt me-2"></i>Kathmandu, Nepal</p>
-                    <p class="small mb-1"><i class="fas fa-phone me-2"></i>+977-9800000000</p>
-                    <p class="small mb-3"><i class="fas fa-envelope me-2"></i>info@safenepal.org</p>
-                    
-                    <!-- Social Media -->
-                    <div>
-                        <a href="#" class="text-white me-3"><i class="fab fa-facebook fa-lg"></i></a>
-                        <a href="#" class="text-white me-3"><i class="fab fa-twitter fa-lg"></i></a>
-                        <a href="#" class="text-white me-3"><i class="fab fa-instagram fa-lg"></i></a>
-                        <a href="#" class="text-white"><i class="fab fa-youtube fa-lg"></i></a>
+                <div class="card-footer bg-white py-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <span class="badge bg-success me-2"><i class="fas fa-check-circle me-1"></i> 12 Available</span>
+                            <span class="badge bg-secondary"><i class="fas fa-users me-1"></i> 250+ Capacity</span>
+                        </div>
+                        <a href="shelters.html" class="btn btn-primary">
+                            <i class="fas fa-location-dot me-2"></i>Find Nearest Shelter
+                        </a>
                     </div>
                 </div>
             </div>
-    
-            <!-- Bottom line -->
-            <div class="text-center mt-4 border-top border-white pt-3">
-                <p class="small mb-0">&copy; 2025 SafeNepal. All rights reserved.</p>
+        </section>
+
+        <!-- Community Updates Section -->
+        <section class="mb-5">
+            <div class="section-header d-flex align-items-center justify-content-between mb-4">
+                <h2 class="h3 mb-0">Community Updates</h2>
+                <a href="community-reports.html" class="text-decoration-none">View all reports <i class="fas fa-arrow-right ms-1"></i></a>
             </div>
-        </div>
-    </footer>
+            <div class="row g-4">
+                <!-- Report 1 -->
+                <div class="col-md-6">
+                    <div class="card border-0 shadow-sm hover-lift h-100">
+                        <div class="card-body p-4">
+                            <div class="d-flex justify-content-between mb-3">
+                                <span class="badge bg-warning text-dark px-3 py-2 rounded-pill"><i class="fas fa-mountain me-1"></i> Landslide</span>
+                                <small class="text-muted">2 hours ago</small>
+                            </div>
+                            <h3 class="h5 mb-3">Road Blocked Near Dhunche</h3>
+                            <p class="card-text text-muted mb-4">Landslide has blocked the main road to Dhunche. Local authorities are working to clear the debris. Alternative routes are available through eastern bypass.</p>
+                            <div class="d-flex justify-content-between align-items-center mt-auto">
+                                <span class="d-flex align-items-center text-muted">
+                                    <i class="fas fa-map-marker-alt me-2 text-danger"></i>Rasuwa District
+                                </span>
+                                <button class="btn btn-sm btn-outline-secondary rounded-pill px-3">
+                                    <i class="fas fa-eye me-1"></i> Details
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Report 2 -->
+                <div class="col-md-6">
+                    <div class="card border-0 shadow-sm hover-lift h-100">
+                        <div class="card-body p-4">
+                            <div class="d-flex justify-content-between mb-3">
+                                <span class="badge bg-primary px-3 py-2 rounded-pill"><i class="fas fa-water me-1"></i> Flood</span>
+                                <small class="text-muted">5 hours ago</small>
+                            </div>
+                            <h3 class="h5 mb-3">Rising Water Levels in Koshi River</h3>
+                            <p class="card-text text-muted mb-4">Water levels in Koshi River are rising rapidly. Residents in low-lying areas are advised to evacuate immediately. Emergency services are on high alert and evacuation centers have been established.</p>
+                            <div class="d-flex justify-content-between align-items-center mt-auto">
+                                <span class="d-flex align-items-center text-muted">
+                                    <i class="fas fa-map-marker-alt me-2 text-danger"></i>Sunsari District
+                                </span>
+                                <button class="btn btn-sm btn-outline-secondary rounded-pill px-3">
+                                    <i class="fas fa-eye me-1"></i> Details
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Call to Action Section -->
+        <section class="mb-5">
+            <div class="card border-0 bg-primary text-white rounded-4 overflow-hidden">
+                <div class="row g-0">
+                    <div class="col-lg-8">
+                        <div class="card-body p-5">
+                            <h2 class="h3 mb-3">Prepare Before Disaster Strikes</h2>
+                            <p class="lead mb-4">Learn how to create an emergency plan, build a survival kit, and keep your family safe during disasters.</p>
+                            <div class="d-flex flex-wrap gap-3">
+                                <a href="simulation.html" class="btn btn-light text-primary">
+                                    <i class="fas fa-vr-cardboard me-2"></i>Try Disaster Simulation
+                                </a>
+                                <a href="safety.html" class="btn btn-outline-light">
+                                    <i class="fas fa-book me-2"></i>Read Safety Guides
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 d-none d-lg-block">
+                        <div class="h-100" style="background: url('https://images.unsplash.com/photo-1603398938378-e54eab446dde?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80') no-repeat center center; background-size: cover;"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
     
     <div class="modal fade" id="disasterModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -402,7 +673,34 @@ box-shadow:  14px 14px 36px #b7ae9b,
       </div>
 
 
-      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+      <script src="js/offline.js"></script>
+      <script src="js/language.js"></script>
+      <script src="js/notifications.js"></script>
+      <script src="js/settings.js"></script>
+      <!-- Initialize App Features -->
+      <script>
+        // Initialize language support
+        document.addEventListener('DOMContentLoaded', () => {
+          if (typeof languageManager !== 'undefined' && typeof languageManager.init === 'function') {
+            languageManager.init();
+          }
+          
+          // Initialize offline support
+          if (typeof offlineManager !== 'undefined' && typeof offlineManager.init === 'function') {
+            offlineManager.init();
+          }
+        });
+        
+        // Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then(reg => console.log('Service Worker registered'))
+                    .catch(err => console.log('Service Worker registration failed:', err));
+            });
+        }
+      </script>
 <script>
    document.addEventListener('DOMContentLoaded', function() {
   const disasterModal = new bootstrap.Modal(document.getElementById('disasterModal'));
@@ -466,8 +764,121 @@ box-shadow:  14px 14px 36px #b7ae9b,
       
     }, 1500); // Simulate network delay
   });
-});
+});  
 </script>
+
+<!-- Footer -->
+<footer class="bg-dark text-white py-4 mt-5">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-4 mb-4">
+        <h5 class="fw-bold mb-3">
+          <i class="fas fa-shield-alt me-2 text-primary"></i>
+          SafeNepal
+        </h5>
+        <p class="text-light opacity-75 mb-3">
+          Your trusted companion for disaster preparedness and emergency response in Nepal.
+        </p>
+        <div class="d-flex gap-3">
+          <a href="#" class="text-light opacity-75 hover-opacity-100">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+          <a href="#" class="text-light opacity-75 hover-opacity-100">
+            <i class="fab fa-twitter"></i>
+          </a>
+          <a href="#" class="text-light opacity-75 hover-opacity-100">
+            <i class="fab fa-instagram"></i>
+          </a>
+          <a href="#" class="text-light opacity-75 hover-opacity-100">
+            <i class="fab fa-linkedin-in"></i>
+          </a>
+        </div>
+      </div>
+      
+      <div class="col-lg-2 col-md-6 mb-4">
+        <h6 class="fw-semibold mb-3">Quick Links</h6>
+        <ul class="list-unstyled">
+          <li class="mb-2">
+            <a href="index.html" class="text-light opacity-75 text-decoration-none hover-opacity-100">
+              <i class="fas fa-home me-2"></i>Home
+            </a>
+          </li>
+          <li class="mb-2">
+            <a href="safety.html" class="text-light opacity-75 text-decoration-none hover-opacity-100">
+              <i class="fas fa-shield-alt me-2"></i>Safety Guides
+            </a>
+          </li>
+          <li class="mb-2">
+            <a href="contacts.html" class="text-light opacity-75 text-decoration-none hover-opacity-100">
+              <i class="fas fa-phone me-2"></i>Emergency Contacts
+            </a>
+          </li>
+          <li class="mb-2">
+            <a href="shelters.html" class="text-light opacity-75 text-decoration-none hover-opacity-100">
+              <i class="fas fa-map-marker-alt me-2"></i>Shelters
+            </a>
+          </li>
+        </ul>
+      </div>
+      
+      <div class="col-lg-3 col-md-6 mb-4">
+        <h6 class="fw-semibold mb-3">Emergency Contacts</h6>
+        <ul class="list-unstyled">
+          <li class="mb-2">
+            <i class="fas fa-phone me-2 text-danger"></i>
+            <span class="text-light opacity-75">Police: 100</span>
+          </li>
+          <li class="mb-2">
+            <i class="fas fa-ambulance me-2 text-danger"></i>
+            <span class="text-light opacity-75">Ambulance: 102</span>
+          </li>
+          <li class="mb-2">
+            <i class="fas fa-fire me-2 text-danger"></i>
+            <span class="text-light opacity-75">Fire: 101</span>
+          </li>
+          <li class="mb-2">
+            <i class="fas fa-exclamation-triangle me-2 text-warning"></i>
+            <span class="text-light opacity-75">Disaster Helpline: 1131</span>
+          </li>
+        </ul>
+      </div>
+      
+      <div class="col-lg-3 mb-4">
+        <h6 class="fw-semibold mb-3">Contact Info</h6>
+        <ul class="list-unstyled">
+          <li class="mb-2">
+            <i class="fas fa-envelope me-2 text-primary"></i>
+            <span class="text-light opacity-75">info@safenepal.gov.np</span>
+          </li>
+          <li class="mb-2">
+            <i class="fas fa-map-marker-alt me-2 text-primary"></i>
+            <span class="text-light opacity-75">Kathmandu, Nepal</span>
+          </li>
+          <li class="mb-2">
+            <i class="fas fa-clock me-2 text-primary"></i>
+            <span class="text-light opacity-75">24/7 Emergency Support</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+    <hr class="my-4 opacity-25">
+    
+    <div class="row align-items-center">
+      <div class="col-md-6">
+        <p class="mb-0 text-light opacity-75">
+          &copy; 2025 SafeNepal. All rights reserved.
+        </p>
+      </div>
+      <div class="col-md-6 text-md-end">
+        <a href="#" class="text-light opacity-75 text-decoration-none me-3 hover-opacity-100">Privacy Policy</a>
+        <a href="#" class="text-light opacity-75 text-decoration-none me-3 hover-opacity-100">Terms of Service</a>
+        <a href="#" class="text-light opacity-75 text-decoration-none hover-opacity-100">Sitemap</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
 </body>
 
 </html>

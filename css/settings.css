@@ -1,0 +1,252 @@
+/**
+ * SafeNepal Settings CSS
+ * Custom styles for the settings page
+ */
+
+/* Text size classes */
+.text-size-1 {
+    font-size: 0.85rem;
+}
+
+.text-size-2 {
+    font-size: 0.95rem;
+}
+
+.text-size-3 {
+    font-size: 1rem; /* Default */
+}
+
+.text-size-4 {
+    font-size: 1.1rem;
+}
+
+.text-size-5 {
+    font-size: 1.2rem;
+}
+
+/* High contrast mode */
+.high-contrast {
+    --primary: #0000ff;
+    --primary-dark: #0000cc;
+    --secondary: #ffff00;
+    --secondary-dark: #cccc00;
+    --dark: #000000;
+    --light: #ffffff;
+    --success: #00aa00;
+    --danger: #ff0000;
+    --warning: #ffaa00;
+    --info: #00aaff;
+}
+
+.high-contrast .navbar-dark {
+    background-color: #000000 !important;
+}
+
+.high-contrast .bg-primary {
+    background-color: #0000ff !important;
+}
+
+.high-contrast .bg-secondary {
+    background-color: #ffff00 !important;
+    color: #000000 !important;
+}
+
+.high-contrast .bg-dark {
+    background-color: #000000 !important;
+}
+
+.high-contrast .bg-light {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+}
+
+.high-contrast .text-muted {
+    color: #000000 !important;
+}
+
+.high-contrast .card {
+    border: 2px solid #000000;
+}
+
+.high-contrast .form-control,
+.high-contrast .form-select {
+    border: 2px solid #000000;
+}
+
+.high-contrast .btn-primary {
+    background-color: #0000ff !important;
+    border-color: #0000cc !important;
+    color: #ffffff !important;
+}
+
+.high-contrast .btn-secondary {
+    background-color: #ffff00 !important;
+    border-color: #cccc00 !important;
+    color: #000000 !important;
+}
+
+.high-contrast .btn-outline-primary {
+    border-color: #0000ff !important;
+    color: #0000ff !important;
+}
+
+.high-contrast .btn-outline-primary:hover {
+    background-color: #0000ff !important;
+    color: #ffffff !important;
+}
+
+/* Reduce motion */
+.reduce-motion * {
+    transition: none !important;
+    animation: none !important;
+}
+
+/* Screen reader optimized */
+.screen-reader-optimized .visually-hidden {
+    position: static !important;
+    width: auto !important;
+    height: auto !important;
+    margin: 0 !important;
+    overflow: visible !important;
+    clip: auto !important;
+    white-space: normal !important;
+    clip-path: none !important;
+}
+
+.screen-reader-optimized .sr-only-focusable:not(:focus) {
+    position: static !important;
+    width: auto !important;
+    height: auto !important;
+    margin: 0 !important;
+    overflow: visible !important;
+    clip: auto !important;
+    white-space: normal !important;
+    clip-path: none !important;
+}
+
+/* Theme specific styles */
+.theme-dark {
+    --primary: #0d6efd;
+    --primary-dark: #0a58ca;
+    --secondary: #6c757d;
+    --secondary-dark: #5a6268;
+    --dark: #212529;
+    --light: #f8f9fa;
+    --body-bg: #343a40;
+    --body-color: #f8f9fa;
+    --card-bg: #495057;
+    --card-border: #6c757d;
+    --input-bg: #343a40;
+    --input-color: #f8f9fa;
+    --input-border: #6c757d;
+}
+
+.theme-dark body {
+    background-color: var(--body-bg);
+    color: var(--body-color);
+}
+
+.theme-dark .card {
+    background-color: var(--card-bg);
+    border-color: var(--card-border);
+}
+
+.theme-dark .form-control,
+.theme-dark .form-select {
+    background-color: var(--input-bg);
+    color: var(--input-color);
+    border-color: var(--input-border);
+}
+
+.theme-dark .modal-content {
+    background-color: var(--card-bg);
+    color: var(--body-color);
+}
+
+.theme-dark .text-muted {
+    color: #adb5bd !important;
+}
+
+.theme-dark .border {
+    border-color: var(--card-border) !important;
+}
+
+.theme-dark .table {
+    color: var(--body-color);
+}
+
+.theme-dark hr {
+    border-color: var(--card-border);
+}
+
+/* Settings page specific styles */
+.settings-icon {
+    font-size: 1.5rem;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    margin-right: 1rem;
+}
+
+.settings-section {
+    margin-bottom: 2rem;
+}
+
+.settings-card {
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.settings-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.reduce-motion .settings-card:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+.form-range::-webkit-slider-thumb {
+    background: var(--primary);
+}
+
+.form-range::-moz-range-thumb {
+    background: var(--primary);
+}
+
+.form-range::-ms-thumb {
+    background: var(--primary);
+}
+
+.form-check-input:checked {
+    background-color: var(--primary);
+    border-color: var(--primary-dark);
+}
+
+.storage-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+}
+
+.storage-label {
+    display: flex;
+    align-items: center;
+}
+
+.storage-icon {
+    margin-right: 0.5rem;
+    width: 20px;
+    text-align: center;
+}
+
+.storage-value {
+    font-weight: 500;
+}
+
+.data-management-btn {
+    margin-bottom: 0.5rem;
+}

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offline | SafeNepal</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-light: #dbeafe;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8fafc;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+        
+        .offline-container {
+            max-width: 600px;
+            text-align: center;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .offline-icon {
+            font-size: 5rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+        
+        .cached-content {
+            margin-top: 2rem;
+            text-align: left;
+            border-top: 1px solid #e5e7eb;
+            padding-top: 1.5rem;
+        }
+        
+        .cached-content h3 {
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+        }
+        
+        .cached-links {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .cached-links li {
+            margin-bottom: 0.75rem;
+        }
+        
+        .cached-links a {
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        
+        .cached-links a i {
+            margin-right: 0.5rem;
+        }
+        
+        .cached-links a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="offline-container">
+        <div class="offline-icon">
+            <i class="fas fa-wifi-slash"></i>
+        </div>
+        
+        <h1>You're Offline</h1>
+        <p class="lead">It looks like you don't have an internet connection right now.</p>
+        <p>Don't worry! You can still access critical safety information that has been saved for offline use.</p>
+        
+        <button class="btn btn-primary mt-3" onclick="window.location.reload()">
+            <i class="fas fa-sync-alt me-2"></i>Try Again
+        </button>
+        
+        <div class="cached-content">
+            <h3>Available Offline Content:</h3>
+            <ul class="cached-links">
+                <li>
+                    <a href="/index.html">
+                        <i class="fas fa-home"></i> Home
+                    </a>
+                </li>
+                <li>
+                    <a href="/safety.html">
+                        <i class="fas fa-shield-alt"></i> Safety Guides
+                    </a>
+                </li>
+                <li>
+                    <a href="/contacts.html">
+                        <i class="fas fa-phone-alt"></i> Emergency Contacts
+                    </a>
+                </li>
+                <li>
+                    <a href="/shelters.html">
+                        <i class="fas fa-house-damage"></i> Emergency Shelters
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    
+    <script>
+        // Check if we're back online
+        window.addEventListener('online', () => {
+            window.location.reload();
+        });
+        
+        // Check if service worker is registered
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.ready.then(registration => {
+                console.log('Service Worker is active');
+            });
+        }
+    </script>
+</body>
+</html>
