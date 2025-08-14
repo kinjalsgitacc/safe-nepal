@@ -1,0 +1,1401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - SafeNepal</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/settings.css">
+    
+    <!-- Manifest for PWA -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- iOS support -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="SafeNepal">
+    <link rel="apple-touch-icon" href="/images/icons/icon-152x152.png">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="index.html">
+                <i class="fas fa-shield-alt me-2"></i>
+                <span>SafeNepal</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto justify-content-center">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="safety.html">Safety Guides</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contacts.html">Emergency Contacts</a></li>
+                    <li class="nav-item"><a class="nav-link" href="shelters.html">Shelters</a></li>
+                    <li class="nav-item"><a class="nav-link" href="community-reports.html">Community Reports</a></li>
+                    <li class="nav-item"><a class="nav-link" href="simulation.html">Simulation</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="settings.html">Settings</a></li>
+                    <li class="nav-item dropdown">
+                </ul>
+                <div class="d-flex">
+                    <div class="dropdown me-2">
+                        <button class="btn btn-outline-light dropdown-toggle" type="button" id="languageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-language me-1"></i> EN
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="languageDropdown">
+                            <li><a class="dropdown-item" href="#" data-lang="en">English</a></li>
+                            <li><a class="dropdown-item" href="#" data-lang="ne">नेपाली</a></li>
+                            <li><a class="dropdown-item" href="#" data-lang="hi">हिन्दी</a></li>
+                            <li><a class="dropdown-item" href="#" data-lang="zh">中文</a></li>
+                        </ul>
+                    </div>
+                    <button id="notifications-btn" class="btn btn-outline-light position-relative">
+                        <i class="fas fa-bell"></i>
+                        <span id="notification-badge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none">
+                            <span id="notification-count">0</span>
+                            <span class="visually-hidden">unread notifications</span>
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <!-- Page Title -->
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h1 class="h2"><i class="fas fa-cog me-2 text-primary"></i> Settings</h1>
+                </div>
+
+                <!-- Settings Tabs -->
+                <ul class="nav nav-tabs mb-4" id="settingsTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="general-tab" data-bs-toggle="tab" data-bs-target="#general" type="button" role="tab" aria-controls="general" aria-selected="true">
+                            <i class="fas fa-sliders-h me-1"></i> General
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="notifications-tab" data-bs-toggle="tab" data-bs-target="#notifications" type="button" role="tab" aria-controls="notifications" aria-selected="false">
+                            <i class="fas fa-bell me-1"></i> Notifications
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="data-tab" data-bs-toggle="tab" data-bs-target="#data" type="button" role="tab" aria-controls="data" aria-selected="false">
+                            <i class="fas fa-database me-1"></i> Data & Storage
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="account-tab" data-bs-toggle="tab" data-bs-target="#account" type="button" role="tab" aria-controls="account" aria-selected="false">
+                            <i class="fas fa-user me-1"></i> Account
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="about-tab" data-bs-toggle="tab" data-bs-target="#about" type="button" role="tab" aria-controls="about" aria-selected="false">
+                            <i class="fas fa-info-circle me-1"></i> About
+                        </button>
+                    </li>
+                </ul>
+
+                <!-- Settings Content -->
+                <div class="tab-content" id="settingsTabsContent">
+                    <!-- General Settings -->
+                    <div class="tab-pane fade show active" id="general" role="tabpanel" aria-labelledby="general-tab">
+                        <div class="card border-primary mb-4">
+                            <div class="card-header bg-primary text-white">
+                                <h5 class="mb-0">General Settings</h5>
+                            </div>
+                            <div class="card-body">
+                                <!-- Language Settings -->
+                                <div class="mb-4">
+                                    <h6 class="mb-3">Language</h6>
+                                    <div class="mb-3">
+                                        <label for="language-select" class="form-label">Display Language</label>
+                                        <select class="form-select" id="language-select">
+                                            <option value="en">English</option>
+                                            <option value="ne">नेपाली (Nepali)</option>
+                                            <option value="hi">हिन्दी (Hindi)</option>
+                                            <option value="zh">中文 (Chinese)</option>
+                                        </select>
+                                        <div class="form-text">Changes will apply immediately across the app.</div>
+                                    </div>
+                                </div>
+                                
+                                <hr>
+                                
+                                <!-- Theme Settings -->
+                                <div class="mb-4">
+                                    <h6 class="mb-3">Theme</h6>
+                                    <div class="mb-3">
+                                        <label class="form-label">Color Theme</label>
+                                        <div class="d-flex gap-2">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="theme" id="theme-light" value="light" checked>
+                                                <label class="form-check-label" for="theme-light">
+                                                    Light
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="theme" id="theme-dark" value="dark">
+                                                <label class="form-check-label" for="theme-dark">
+                                                    Dark
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="theme" id="theme-system" value="system">
+                                                <label class="form-check-label" for="theme-system">
+                                                    System Default
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Text Size</label>
+                                        <div class="d-flex align-items-center">
+                                            <span class="me-2"><i class="fas fa-font fa-sm"></i></span>
+                                            <input type="range" class="form-range" min="1" max="5" step="1" id="text-size-range" value="3">
+                                            <span class="ms-2"><i class="fas fa-font fa-lg"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <hr>
+                                
+                                <!-- Location Settings -->
+                                <div class="mb-4">
+                                    <h6 class="mb-3">Location</h6>
+                                    <div class="mb-3">
+                                        <label class="form-label">Default Location</label>
+                                        <div class="input-group mb-2">
+                                            <input type="text" class="form-control" id="default-location" placeholder="e.g., Kathmandu, Nepal" value="Kathmandu, Nepal">
+                                            <button class="btn btn-outline-secondary" type="button" id="detect-location-btn">
+                                                <i class="fas fa-map-marker-alt"></i>
+                                            </button>
+                                        </div>
+                                        <div class="form-text">Used for weather and earthquake alerts when precise location is unavailable.</div>
+                                    </div>
+                                    <div class="form-check form-switch mb-3">
+                                        <input class="form-check-input" type="checkbox" id="location-permission" checked>
+                                        <label class="form-check-label" for="location-permission">
+                                            Allow precise location access
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <hr>
+                                
+                                <!-- Accessibility Settings -->
+                                <div class="mb-4">
+                                    <h6 class="mb-3">Accessibility</h6>
+                                    <div class="form-check form-switch mb-3">
+                                        <input class="form-check-input" type="checkbox" id="high-contrast" value="">
+                                        <label class="form-check-label" for="high-contrast">
+                                            High contrast mode
+                                        </label>
+                                    </div>
+                                    <div class="form-check form-switch mb-3">
+                                        <input class="form-check-input" type="checkbox" id="reduce-motion" value="">
+                                        <label class="form-check-label" for="reduce-motion">
+                                            Reduce motion
+                                        </label>
+                                    </div>
+                                    <div class="form-check form-switch mb-3">
+                                        <input class="form-check-input" type="checkbox" id="screen-reader" value="">
+                                        <label class="form-check-label" for="screen-reader">
+                                            Optimize for screen readers
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <div class="d-grid">
+                                    <button type="button" class="btn btn-primary" id="save-general-settings">
+                                        <i class="fas fa-save me-1"></i> Save Changes
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Notification Settings -->
+                    <div class="tab-pane fade" id="notifications" role="tabpanel" aria-labelledby="notifications-tab">
+                        <div class="card border-primary mb-4">
+                            <div class="card-header bg-primary text-white">
+                                <h5 class="mb-0">Notification Settings</h5>
+                            </div>
+                            <div class="card-body">
+                                <!-- Notification Permissions -->
+                                <div class="mb-4">
+                                    <h6 class="mb-3">Notification Permissions</h6>
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <div>
+                                            <p class="mb-0">Push Notifications</p>
+                                            <small class="text-muted">Allow SafeNepal to send you notifications</small>
+                                        </div>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" id="push-permission" checked>
+                                        </div>
+                                    </div>
+                                    <div id="push-subscription-container">
+                                        <!-- Push subscription UI will be loaded here -->
+                                    </div>
+                                </div>
+                                
+                                <hr>
+                                
+                                <!-- Alert Types -->
+                                <div class="mb-4">
+                                    <h6 class="mb-3">Alert Types</h6>
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <div>
+                                            <p class="mb-0">Earthquake Alerts</p>
+                                            <small class="text-muted">Notifications for earthquakes near your location</small>
+                                        </div>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" id="earthquake-alerts" checked>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <div>
+                                            <p class="mb-0">Weather Alerts</p>
+                                            <small class="text-muted">Notifications for severe weather conditions</small>
+                                        </div>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" id="weather-alerts" checked>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <div>
+                                            <p class="mb-0">Flood Alerts</p>
+                                            <small class="text-muted">Notifications for flood warnings</small>
+                                        </div>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" id="flood-alerts" checked>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <div>
+                                            <p class="mb-0">Landslide Alerts</p>
+                                            <small class="text-muted">Notifications for landslide risks</small>
+                                        </div>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" id="landslide-alerts" checked>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <div>
+                                            <p class="mb-0">Community Reports</p>
+                                            <small class="text-muted">Notifications for nearby community reports</small>
+                                        </div>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" id="community-alerts" checked>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <hr>
+                                
+                                <!-- Alert Preferences -->
+                                <div class="mb-4">
+                                    <h6 class="mb-3">Alert Preferences</h6>
+                                    <div class="mb-3">
+                                        <label for="alert-frequency" class="form-label">Alert Frequency</label>
+                                        <select class="form-select" id="alert-frequency">
+                                            <option value="all">All alerts (recommended)</option>
+                                            <option value="high">High priority only</option>
+                                            <option value="critical">Critical alerts only</option>
+                                            <option value="daily">Daily summary only</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="quiet-hours-start" class="form-label">Quiet Hours</label>
+                                        <div class="row g-2">
+                                            <div class="col-6">
+                                                <div class="input-group">
+                                                    <span class="input-group-text">From</span>
+                                                    <input type="time" class="form-control" id="quiet-hours-start" value="22:00">
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="input-group">
+                                                    <span class="input-group-text">To</span>
+                                                    <input type="time" class="form-control" id="quiet-hours-end" value="06:00">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-text">Critical alerts will still be delivered during quiet hours.</div>
+                                    </div>
+                                    <div class="form-check mb-3">
+                                        <input class="form-check-input" type="checkbox" id="override-quiet-hours" checked>
+                                        <label class="form-check-label" for="override-quiet-hours">
+                                            Allow critical alerts during quiet hours
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <hr>
+                                
+                                <!-- Sound & Vibration -->
+                                <div class="mb-4">
+                                    <h6 class="mb-3">Sound & Vibration</h6>
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <div>
+                                            <p class="mb-0">Notification Sound</p>
+                                            <small class="text-muted">Play sound when notifications arrive</small>
+                                        </div>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" id="notification-sound" checked>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="sound-type" class="form-label">Alert Sound</label>
+                                        <select class="form-select" id="sound-type">
+                                            <option value="default">Default</option>
+                                            <option value="urgent">Urgent</option>
+                                            <option value="siren">Siren</option>
+                                            <option value="gentle">Gentle</option>
+                                            <option value="chime">Chime</option>
+                                        </select>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <div>
+                                            <p class="mb-0">Vibration</p>
+                                            <small class="text-muted">Vibrate when notifications arrive</small>
+                                        </div>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" id="notification-vibration" checked>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="d-grid">
+                                    <button type="button" class="btn btn-primary" id="save-notification-settings">
+                                        <i class="fas fa-save me-1"></i> Save Changes
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Data & Storage Settings -->
+                    <div class="tab-pane fade" id="data" role="tabpanel" aria-labelledby="data-tab">
+                        <div class="card border-primary mb-4">
+                            <div class="card-header bg-primary text-white">
+                                <h5 class="mb-0">Data & Storage</h5>
+                            </div>
+                            <div class="card-body">
+                                <!-- Storage Usage -->
+                                <div class="mb-4">
+                                    <h6 class="mb-3">Storage Usage</h6>
+                                    <div class="mb-3">
+                                        <div class="d-flex justify-content-between mb-1">
+                                            <span>Total Storage Used</span>
+                                            <span id="total-storage-used">0 MB</span>
+                                        </div>
+                                        <div class="progress" style="height: 8px;">
+                                            <div class="progress-bar bg-primary" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                    </div>
+                                    <div class="list-group mb-3">
+                                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <i class="fas fa-map me-2 text-primary"></i> Map Data
+                                            </div>
+                                            <span id="map-storage-used">0 MB</span>
+                                        </div>
+                                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <i class="fas fa-phone-alt me-2 text-success"></i> Contact Data
+                                            </div>
+                                            <span id="contacts-storage-used">0 MB</span>
+                                        </div>
+                                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <i class="fas fa-bullhorn me-2 text-warning"></i> Community Reports
+                                            </div>
+                                            <span id="reports-storage-used">0 MB</span>
+                                        </div>
+                                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <i class="fas fa-book me-2 text-danger"></i> Safety Guides
+                                            </div>
+                                            <span id="guides-storage-used">0 MB</span>
+                                        </div>
+                                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <i class="fas fa-cog me-2 text-secondary"></i> App Settings
+                                            </div>
+                                            <span id="settings-storage-used">0 MB</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <hr>
+                                
+                                <!-- Offline Access -->
+                                <div class="mb-4">
+                                    <h6 class="mb-3">Offline Access</h6>
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <div>
+                                            <p class="mb-0">Enable Offline Mode</p>
+                                            <small class="text-muted">Store essential data for offline access</small>
+                                        </div>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" id="offline-mode" checked>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Data to Store Offline</label>
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="checkbox" id="offline-maps" checked>
+                                            <label class="form-check-label" for="offline-maps">
+                                                Maps (Kathmandu area)
+                                            </label>
+                                        </div>
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="checkbox" id="offline-contacts" checked>
+                                            <label class="form-check-label" for="offline-contacts">
+                                                Emergency Contacts
+                                            </label>
+                                        </div>
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="checkbox" id="offline-guides" checked>
+                                            <label class="form-check-label" for="offline-guides">
+                                                Safety Guides
+                                            </label>
+                                        </div>
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="checkbox" id="offline-shelters" checked>
+                                            <label class="form-check-label" for="offline-shelters">
+                                                Shelter Locations
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <hr>
+                                
+                                <!-- Data Management -->
+                                <div class="mb-4">
+                                    <h6 class="mb-3">Data Management</h6>
+                                    <div class="mb-3">
+                                        <button type="button" class="btn btn-outline-primary w-100 mb-2" id="export-data-btn">
+                                            <i class="fas fa-file-export me-1"></i> Export All Data
+                                        </button>
+                                        <button type="button" class="btn btn-outline-primary w-100 mb-2" id="import-data-btn">
+                                            <i class="fas fa-file-import me-1"></i> Import Data
+                                        </button>
+                                        <button type="button" class="btn btn-outline-warning w-100 mb-2" id="clear-cache-btn">
+                                            <i class="fas fa-broom me-1"></i> Clear Cache
+                                        </button>
+                                        <button type="button" class="btn btn-outline-danger w-100" id="reset-app-btn">
+                                            <i class="fas fa-trash-alt me-1"></i> Reset App
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <div class="d-grid">
+                                    <button type="button" class="btn btn-primary" id="save-data-settings">
+                                        <i class="fas fa-save me-1"></i> Save Changes
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Account Settings -->
+                    <div class="tab-pane fade" id="account" role="tabpanel" aria-labelledby="account-tab">
+                        <div class="card border-primary mb-4">
+                            <div class="card-header bg-primary text-white">
+                                <h5 class="mb-0">Account Settings</h5>
+                            </div>
+                            <div class="card-body">
+                                <!-- Profile Information -->
+                                <div class="mb-4">
+                                    <h6 class="mb-3">Profile Information</h6>
+                                    <div class="mb-3">
+                                        <label for="profile-name" class="form-label">Display Name</label>
+                                        <input type="text" class="form-control" id="profile-name" placeholder="Your name">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="profile-email" class="form-label">Email Address</label>
+                                        <input type="email" class="form-control" id="profile-email" placeholder="your.email@example.com">
+                                        <div class="form-text">Used for account recovery and important notifications.</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="profile-phone" class="form-label">Phone Number</label>
+                                        <input type="tel" class="form-control" id="profile-phone" placeholder="+977 98XXXXXXXX">
+                                        <div class="form-text">Used for emergency SMS alerts.</div>
+                                    </div>
+                                </div>
+                                
+                                <hr>
+                                
+                                <!-- Emergency Contacts -->
+                                <div class="mb-4">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <h6 class="mb-0">Emergency Contacts</h6>
+                                        <a href="contacts.html" class="btn btn-sm btn-outline-primary">
+                                            <i class="fas fa-edit me-1"></i> Manage
+                                        </a>
+                                    </div>
+                                    <p class="text-muted small">Your emergency contacts can be managed in the Emergency Contacts section.</p>
+                                </div>
+                                
+                                <hr>
+                                
+                                <!-- Privacy Settings -->
+                                <div class="mb-4">
+                                    <h6 class="mb-3">Privacy Settings</h6>
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <div>
+                                            <p class="mb-0">Share Location with Emergency Services</p>
+                                            <small class="text-muted">Allow sharing your location during emergencies</small>
+                                        </div>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" id="share-location" checked>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <div>
+                                            <p class="mb-0">Anonymous Community Reports</p>
+                                            <small class="text-muted">Submit community reports anonymously by default</small>
+                                        </div>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" id="anonymous-reports">
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <div>
+                                            <p class="mb-0">Usage Analytics</p>
+                                            <small class="text-muted">Help improve the app by sharing anonymous usage data</small>
+                                        </div>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" id="usage-analytics" checked>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="d-grid">
+                                    <button type="button" class="btn btn-primary" id="save-account-settings">
+                                        <i class="fas fa-save me-1"></i> Save Changes
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- About -->
+                    <div class="tab-pane fade" id="about" role="tabpanel" aria-labelledby="about-tab">
+                        <div class="card border-primary mb-4">
+                            <div class="card-header bg-primary text-white">
+                                <h5 class="mb-0">About SafeNepal</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="text-center mb-4">
+                                    <i class="fas fa-shield-alt fa-4x text-primary mb-3"></i>
+                                    <h4>SafeNepal</h4>
+                                    <p class="text-muted">Your comprehensive disaster preparedness hub</p>
+                                    <p><span class="badge bg-primary">Version 1.0.0</span></p>
+                                </div>
+                                
+                                <div class="mb-4">
+                                    <h6 class="mb-3">About the App</h6>
+                                    <p>SafeNepal is a comprehensive disaster preparedness and response application designed specifically for Nepal. Our mission is to provide timely information, resources, and tools to help people prepare for, respond to, and recover from natural disasters.</p>
+                                    <p>The app includes features such as real-time earthquake alerts, weather forecasts, emergency contacts management, shelter locations, safety guides, community reports, and disaster simulation training.</p>
+                                </div>
+                                
+                                <hr>
+                                
+                                <div class="mb-4">
+                                    <h6 class="mb-3">Data Sources</h6>
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item">
+                                            <i class="fas fa-house-crack text-danger me-2"></i> Earthquake data: USGS Earthquake API
+                                        </li>
+                                        <li class="list-group-item">
+                                            <i class="fas fa-cloud-sun-rain text-primary me-2"></i> Weather data: OpenWeatherMap API
+                                        </li>
+                                        <li class="list-group-item">
+                                            <i class="fas fa-map-marker-alt text-success me-2"></i> Map data: OpenStreetMap
+                                        </li>
+                                        <li class="list-group-item">
+                                            <i class="fas fa-book text-warning me-2"></i> Safety guides: Nepal Red Cross Society, NSET
+                                        </li>
+                                    </ul>
+                                </div>
+                                
+                                <hr>
+                                
+                                <div class="mb-4">
+                                    <h6 class="mb-3">Contact & Support</h6>
+                                    <p><i class="fas fa-envelope me-2"></i> Email: <a href="mailto:support@safenepal.org">support@safenepal.org</a></p>
+                                    <p><i class="fas fa-globe me-2"></i> Website: <a href="https://www.safenepal.org" target="_blank">www.safenepal.org</a></p>
+                                    <p><i class="fas fa-phone me-2"></i> Support: +977 1-XXXXXXX</p>
+                                </div>
+                                
+                                <hr>
+                                
+                                <div class="mb-4">
+                                    <h6 class="mb-3">Legal</h6>
+                                    <div class="d-grid gap-2">
+                                        <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#termsModal">
+                                            <i class="fas fa-file-contract me-1"></i> Terms of Service
+                                        </button>
+                                        <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#privacyModal">
+                                            <i class="fas fa-user-shield me-1"></i> Privacy Policy
+                                        </button>
+                                        <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#licensesModal">
+                                            <i class="fas fa-file-code me-1"></i> Open Source Licenses
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Terms of Service Modal -->
+    <div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="termsModalLabel">Terms of Service</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h6>1. Acceptance of Terms</h6>
+                    <p>By accessing or using the SafeNepal application, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use the application.</p>
+                    
+                    <h6>2. Description of Service</h6>
+                    <p>SafeNepal provides disaster preparedness and response information, including but not limited to earthquake alerts, weather forecasts, emergency contacts management, shelter locations, safety guides, and community reports.</p>
+                    
+                    <h6>3. User Conduct</h6>
+                    <p>You agree to use SafeNepal only for lawful purposes and in accordance with these Terms. You agree not to use SafeNepal:</p>
+                    <ul>
+                        <li>In any way that violates any applicable law or regulation.</li>
+                        <li>To transmit any material that is harmful, threatening, abusive, or otherwise objectionable.</li>
+                        <li>To impersonate any person or entity or falsely state or misrepresent your affiliation with a person or entity.</li>
+                        <li>To submit false or misleading information in community reports.</li>
+                    </ul>
+                    
+                    <h6>4. Disclaimer of Warranties</h6>
+                    <p>SafeNepal is provided on an "as is" and "as available" basis. We make no warranties, expressed or implied, regarding the reliability, accuracy, or availability of SafeNepal.</p>
+                    
+                    <h6>5. Limitation of Liability</h6>
+                    <p>In no event shall SafeNepal be liable for any indirect, incidental, special, consequential, or punitive damages, including without limitation, loss of profits, data, use, goodwill, or other intangible losses, resulting from your access to or use of or inability to access or use the application.</p>
+                    
+                    <h6>6. Changes to Terms</h6>
+                    <p>We reserve the right to modify these Terms at any time. We will provide notice of any material changes by updating the "Last Updated" date at the top of these Terms.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Privacy Policy Modal -->
+    <div class="modal fade" id="privacyModal" tabindex="-1" aria-labelledby="privacyModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="privacyModalLabel">Privacy Policy</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h6>1. Information We Collect</h6>
+                    <p>We collect the following types of information:</p>
+                    <ul>
+                        <li><strong>Personal Information:</strong> Name, email address, phone number, and emergency contacts.</li>
+                        <li><strong>Location Data:</strong> With your permission, we collect your precise location to provide location-based services such as nearby shelters and localized alerts.</li>
+                        <li><strong>Usage Data:</strong> Information about how you use the application, including features accessed and time spent.</li>
+                        <li><strong>Community Reports:</strong> Information you provide when submitting community reports.</li>
+                    </ul>
+                    
+                    <h6>2. How We Use Your Information</h6>
+                    <p>We use the information we collect to:</p>
+                    <ul>
+                        <li>Provide and maintain the SafeNepal application.</li>
+                        <li>Send you alerts and notifications about disasters and emergencies.</li>
+                        <li>Improve and personalize your experience with the application.</li>
+                        <li>Develop new features and functionality.</li>
+                        <li>Monitor and analyze usage patterns and trends.</li>
+                    </ul>
+                    
+                    <h6>3. Information Sharing</h6>
+                    <p>We may share your information with:</p>
+                    <ul>
+                        <li><strong>Emergency Services:</strong> During emergencies, we may share your location and contact information with emergency services if you have enabled this feature.</li>
+                        <li><strong>Service Providers:</strong> We may share information with third-party service providers who perform services on our behalf.</li>
+                        <li><strong>Legal Requirements:</strong> We may disclose information if required by law or in response to valid requests by public authorities.</li>
+                    </ul>
+                    
+                    <h6>4. Data Security</h6>
+                    <p>We implement appropriate technical and organizational measures to protect your personal information from unauthorized access, disclosure, alteration, and destruction.</p>
+                    
+                    <h6>5. Your Rights</h6>
+                    <p>You have the right to:</p>
+                    <ul>
+                        <li>Access, correct, or delete your personal information.</li>
+                        <li>Withdraw your consent at any time.</li>
+                        <li>Object to the processing of your personal information.</li>
+                        <li>Request the restriction of processing of your personal information.</li>
+                    </ul>
+                    
+                    <h6>6. Changes to Privacy Policy</h6>
+                    <p>We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the "Last Updated" date.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Open Source Licenses Modal -->
+    <div class="modal fade" id="licensesModal" tabindex="-1" aria-labelledby="licensesModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="licensesModalLabel">Open Source Licenses</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-4">
+                        <h6>Bootstrap</h6>
+                        <p class="small">The MIT License (MIT)</p>
+                        <p class="small">Copyright (c) 2011-2022 Twitter, Inc.<br>Copyright (c) 2011-2022 The Bootstrap Authors</p>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h6>Font Awesome</h6>
+                        <p class="small">Font Awesome Free License</p>
+                        <p class="small">Copyright (c) Fonticons, Inc.</p>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h6>Leaflet</h6>
+                        <p class="small">BSD 2-Clause License</p>
+                        <p class="small">Copyright (c) 2010-2022, Vladimir Agafonkin<br>Copyright (c) 2010-2011, CloudMade</p>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h6>Nodemailer</h6>
+                        <p class="small">MIT License</p>
+                        <p class="small">Copyright (c) 2011-2022 Andris Reinman</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <h5 class="mb-3"><i class="fas fa-shield-alt me-2"></i> SafeNepal</h5>
+                    <p class="text-muted">Your comprehensive disaster preparedness hub for Nepal. Stay safe, stay informed.</p>
+                </div>
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <h5 class="mb-3">Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="index.html" class="text-decoration-none text-muted"><i class="fas fa-angle-right me-1"></i> Home</a></li>
+                        <li><a href="safety.html" class="text-decoration-none text-muted"><i class="fas fa-angle-right me-1"></i> Safety Guides</a></li>
+                        <li><a href="shelters.html" class="text-decoration-none text-muted"><i class="fas fa-angle-right me-1"></i> Shelters</a></li>
+                        <li><a href="contacts.html" class="text-decoration-none text-muted"><i class="fas fa-angle-right me-1"></i> Emergency Contacts</a></li>
+                        <li><a href="community-reports.html" class="text-decoration-none text-muted"><i class="fas fa-angle-right me-1"></i> Community Reports</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5 class="mb-3">Connect With Us</h5>
+                    <div class="d-flex gap-3 mb-3">
+                        <a href="#" class="text-decoration-none text-muted fs-5"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="text-decoration-none text-muted fs-5"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-decoration-none text-muted fs-5"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-decoration-none text-muted fs-5"><i class="fab fa-youtube"></i></a>
+                    </div>
+                    <p class="text-muted mb-0">Email: <a href="mailto:info@safenepal.org" class="text-decoration-none text-muted">info@safenepal.org</a></p>
+                    <p class="text-muted">Emergency: <a href="tel:+9779851055555" class="text-decoration-none text-muted">+977 9851055555</a></p>
+                </div>
+            </div>
+            <hr class="my-4 bg-secondary">
+            <div class="row align-items-center">
+                <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                    <p class="text-muted mb-0">&copy; 2023 SafeNepal. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <ul class="list-inline mb-0">
+                        <li class="list-inline-item"><a href="#" class="text-decoration-none text-muted small">Privacy Policy</a></li>
+                        <li class="list-inline-item"><span class="text-muted">|</span></li>
+                        <li class="list-inline-item"><a href="#" class="text-decoration-none text-muted small">Terms of Use</a></li>
+                        <li class="list-inline-item"><span class="text-muted">|</span></li>
+                        <li class="list-inline-item"><a href="#" class="text-decoration-none text-muted small">Contact Us</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JS -->
+    <script src="js/offline.js"></script>
+    <script src="js/language.js"></script>
+    <script src="js/notifications.js"></script>
+    <script src="js/push-service.js"></script>
+    <script src="js/settings.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize language support
+            if (typeof languageManager !== 'undefined') {
+                languageManager.init();
+                
+                // Set language select value
+                const languageSelect = document.getElementById('language-select');
+                if (languageSelect) {
+                    languageSelect.value = languageManager.getCurrentLanguage() || 'en';
+                }
+            }
+            
+            // Initialize notifications
+            if (typeof notificationManager !== 'undefined') {
+                notificationManager.init();
+                
+                // Update notification settings based on saved preferences
+                const settings = notificationManager.getSettings();
+                if (settings) {
+                    document.getElementById('push-permission').checked = settings.enabled;
+                    document.getElementById('earthquake-alerts').checked = settings.alertTypes.earthquake;
+                    document.getElementById('weather-alerts').checked = settings.alertTypes.weather;
+                    document.getElementById('flood-alerts').checked = settings.alertTypes.flood;
+                    document.getElementById('landslide-alerts').checked = settings.alertTypes.landslide;
+                    document.getElementById('community-alerts').checked = settings.alertTypes.community;
+                    document.getElementById('alert-frequency').value = settings.frequency;
+                    document.getElementById('notification-sound').checked = settings.sound;
+                    document.getElementById('notification-vibration').checked = settings.vibration;
+                    document.getElementById('sound-type').value = settings.soundType || 'default';
+                    
+                    // Set quiet hours
+                    if (settings.quietHours) {
+                        document.getElementById('quiet-hours-start').value = settings.quietHours.start;
+                        document.getElementById('quiet-hours-end').value = settings.quietHours.end;
+                        document.getElementById('override-quiet-hours').checked = settings.quietHours.allowCritical;
+                    }
+                }
+            }
+            
+            // Initialize push service
+            if (typeof pushService !== 'undefined') {
+                // Create subscription UI
+                pushService.createSubscriptionUI('push-subscription-container');
+            }
+            
+            // Calculate storage usage
+            calculateStorageUsage();
+            
+            // Set up event listeners for settings forms
+            setupEventListeners();
+        });
+        
+        // Calculate storage usage
+        function calculateStorageUsage() {
+            // Get total storage used
+            let totalBytes = 0;
+            let mapBytes = 0;
+            let contactsBytes = 0;
+            let reportsBytes = 0;
+            let guidesBytes = 0;
+            let settingsBytes = 0;
+            
+            // Calculate size of each storage item
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                const value = localStorage.getItem(key);
+                const bytes = new Blob([value]).size;
+                
+                totalBytes += bytes;
+                
+                if (key.includes('map')) {
+                    mapBytes += bytes;
+                } else if (key.includes('contact')) {
+                    contactsBytes += bytes;
+                } else if (key.includes('report')) {
+                    reportsBytes += bytes;
+                } else if (key.includes('guide')) {
+                    guidesBytes += bytes;
+                } else if (key.includes('settings') || key.includes('preference')) {
+                    settingsBytes += bytes;
+                }
+            }
+            
+            // Update UI
+            document.getElementById('total-storage-used').textContent = formatBytes(totalBytes);
+            document.getElementById('map-storage-used').textContent = formatBytes(mapBytes);
+            document.getElementById('contacts-storage-used').textContent = formatBytes(contactsBytes);
+            document.getElementById('reports-storage-used').textContent = formatBytes(reportsBytes);
+            document.getElementById('guides-storage-used').textContent = formatBytes(guidesBytes);
+            document.getElementById('settings-storage-used').textContent = formatBytes(settingsBytes);
+            
+            // Update progress bar
+            const progressBar = document.querySelector('.progress-bar');
+            if (progressBar) {
+                // Estimate percentage of storage used (5MB limit for localStorage)
+                const percentage = Math.min(100, (totalBytes / (5 * 1024 * 1024)) * 100);
+                progressBar.style.width = `${percentage}%`;
+                progressBar.setAttribute('aria-valuenow', percentage);
+            }
+        }
+        
+        // Format bytes to human-readable format
+        function formatBytes(bytes, decimals = 2) {
+            if (bytes === 0) return '0 Bytes';
+            
+            const k = 1024;
+            const dm = decimals < 0 ? 0 : decimals;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+            
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+        }
+        
+        // Set up event listeners for settings forms
+        function setupEventListeners() {
+            // General Settings
+            const saveGeneralBtn = document.getElementById('save-general-settings');
+            if (saveGeneralBtn) {
+                saveGeneralBtn.addEventListener('click', function() {
+                    // Show loading state
+                    this.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...';
+                    this.disabled = true;
+                    
+                    // Get form values
+                    const language = document.getElementById('language-select').value;
+                    const theme = document.querySelector('input[name="theme"]:checked').value;
+                    const textSize = document.getElementById('text-size-range').value;
+                    const defaultLocation = document.getElementById('default-location').value;
+                    const locationPermission = document.getElementById('location-permission').checked;
+                    const highContrast = document.getElementById('high-contrast').checked;
+                    const reduceMotion = document.getElementById('reduce-motion').checked;
+                    const screenReader = document.getElementById('screen-reader').checked;
+                    
+                    // Save settings
+                    const generalSettings = {
+                        language,
+                        theme,
+                        textSize,
+                        defaultLocation,
+                        locationPermission,
+                        accessibility: {
+                            highContrast,
+                            reduceMotion,
+                            screenReader
+                        }
+                    };
+                    
+                    localStorage.setItem('safeNepal_generalSettings', JSON.stringify(generalSettings));
+                    
+                    // Apply language change
+                    if (typeof languageManager !== 'undefined') {
+                        languageManager.changeLanguage(language);
+                    }
+                    
+                    // Restore button after 1 second
+                    setTimeout(() => {
+                        this.innerHTML = '<i class="fas fa-save me-1"></i> Save Changes';
+                        this.disabled = false;
+                        
+                        // Show success message
+                        showAlert('General settings saved successfully!', 'success');
+                    }, 1000);
+                });
+            }
+            
+            // Notification Settings
+            const saveNotificationBtn = document.getElementById('save-notification-settings');
+            if (saveNotificationBtn) {
+                saveNotificationBtn.addEventListener('click', function() {
+                    // Show loading state
+                    this.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...';
+                    this.disabled = true;
+                    
+                    // Get form values
+                    const enabled = document.getElementById('push-permission').checked;
+                    const earthquakeAlerts = document.getElementById('earthquake-alerts').checked;
+                    const weatherAlerts = document.getElementById('weather-alerts').checked;
+                    const floodAlerts = document.getElementById('flood-alerts').checked;
+                    const landslideAlerts = document.getElementById('landslide-alerts').checked;
+                    const communityAlerts = document.getElementById('community-alerts').checked;
+                    const frequency = document.getElementById('alert-frequency').value;
+                    const quietHoursStart = document.getElementById('quiet-hours-start').value;
+                    const quietHoursEnd = document.getElementById('quiet-hours-end').value;
+                    const overrideQuietHours = document.getElementById('override-quiet-hours').checked;
+                    const sound = document.getElementById('notification-sound').checked;
+                    const vibration = document.getElementById('notification-vibration').checked;
+                    const soundType = document.getElementById('sound-type').value;
+                    
+                    // Save settings
+                    if (typeof notificationManager !== 'undefined') {
+                        notificationManager.updateSettings({
+                            enabled,
+                            alertTypes: {
+                                earthquake: earthquakeAlerts,
+                                weather: weatherAlerts,
+                                flood: floodAlerts,
+                                landslide: landslideAlerts,
+                                community: communityAlerts
+                            },
+                            frequency,
+                            quietHours: {
+                                start: quietHoursStart,
+                                end: quietHoursEnd,
+                                allowCritical: overrideQuietHours
+                            },
+                            sound,
+                            vibration,
+                            soundType
+                        });
+                    }
+                    
+                    // Restore button after 1 second
+                    setTimeout(() => {
+                        this.innerHTML = '<i class="fas fa-save me-1"></i> Save Changes';
+                        this.disabled = false;
+                        
+                        // Show success message
+                        showAlert('Notification settings saved successfully!', 'success');
+                    }, 1000);
+                });
+            }
+            
+            // Data & Storage Settings
+            const saveDataBtn = document.getElementById('save-data-settings');
+            if (saveDataBtn) {
+                saveDataBtn.addEventListener('click', function() {
+                    // Show loading state
+                    this.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...';
+                    this.disabled = true;
+                    
+                    // Get form values
+                    const offlineMode = document.getElementById('offline-mode').checked;
+                    const offlineMaps = document.getElementById('offline-maps').checked;
+                    const offlineContacts = document.getElementById('offline-contacts').checked;
+                    const offlineGuides = document.getElementById('offline-guides').checked;
+                    const offlineShelters = document.getElementById('offline-shelters').checked;
+                    
+                    // Save settings
+                    const dataSettings = {
+                        offlineMode,
+                        offlineData: {
+                            maps: offlineMaps,
+                            contacts: offlineContacts,
+                            guides: offlineGuides,
+                            shelters: offlineShelters
+                        }
+                    };
+                    
+                    localStorage.setItem('safeNepal_dataSettings', JSON.stringify(dataSettings));
+                    
+                    // Update offline functionality
+                    if (typeof offlineManager !== 'undefined' && offlineMode) {
+                        offlineManager.updateOfflineData(dataSettings.offlineData);
+                    }
+                    
+                    // Restore button after 1 second
+                    setTimeout(() => {
+                        this.innerHTML = '<i class="fas fa-save me-1"></i> Save Changes';
+                        this.disabled = false;
+                        
+                        // Show success message
+                        showAlert('Data settings saved successfully!', 'success');
+                    }, 1000);
+                });
+            }
+            
+            // Account Settings
+            const saveAccountBtn = document.getElementById('save-account-settings');
+            if (saveAccountBtn) {
+                saveAccountBtn.addEventListener('click', function() {
+                    // Show loading state
+                    this.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...';
+                    this.disabled = true;
+                    
+                    // Get form values
+                    const name = document.getElementById('profile-name').value;
+                    const email = document.getElementById('profile-email').value;
+                    const phone = document.getElementById('profile-phone').value;
+                    const shareLocation = document.getElementById('share-location').checked;
+                    const anonymousReports = document.getElementById('anonymous-reports').checked;
+                    const usageAnalytics = document.getElementById('usage-analytics').checked;
+                    
+                    // Save settings
+                    const accountSettings = {
+                        profile: {
+                            name,
+                            email,
+                            phone
+                        },
+                        privacy: {
+                            shareLocation,
+                            anonymousReports,
+                            usageAnalytics
+                        }
+                    };
+                    
+                    localStorage.setItem('safeNepal_accountSettings', JSON.stringify(accountSettings));
+                    
+                    // Restore button after 1 second
+                    setTimeout(() => {
+                        this.innerHTML = '<i class="fas fa-save me-1"></i> Save Changes';
+                        this.disabled = false;
+                        
+                        // Show success message
+                        showAlert('Account settings saved successfully!', 'success');
+                    }, 1000);
+                });
+            }
+            
+            // Data Management Buttons
+            const exportDataBtn = document.getElementById('export-data-btn');
+            if (exportDataBtn) {
+                exportDataBtn.addEventListener('click', function() {
+                    exportAllData();
+                });
+            }
+            
+            const importDataBtn = document.getElementById('import-data-btn');
+            if (importDataBtn) {
+                importDataBtn.addEventListener('click', function() {
+                    // Create file input element
+                    const fileInput = document.createElement('input');
+                    fileInput.type = 'file';
+                    fileInput.accept = '.json';
+                    fileInput.style.display = 'none';
+                    document.body.appendChild(fileInput);
+                    
+                    // Listen for file selection
+                    fileInput.addEventListener('change', function(e) {
+                        const file = e.target.files[0];
+                        if (file) {
+                            const reader = new FileReader();
+                            reader.onload = function(e) {
+                                try {
+                                    const data = JSON.parse(e.target.result);
+                                    importAllData(data);
+                                } catch (error) {
+                                    showAlert('Invalid data file. Please select a valid SafeNepal backup file.', 'danger');
+                                }
+                            };
+                            reader.readAsText(file);
+                        }
+                    });
+                    
+                    // Trigger file selection dialog
+                    fileInput.click();
+                });
+            }
+            
+            const clearCacheBtn = document.getElementById('clear-cache-btn');
+            if (clearCacheBtn) {
+                clearCacheBtn.addEventListener('click', function() {
+                    if (confirm('Are you sure you want to clear the cache? This will remove temporary files but keep your settings and data.')) {
+                        // Clear cache using service worker
+                        if ('caches' in window) {
+                            caches.keys().then(function(cacheNames) {
+                                return Promise.all(
+                                    cacheNames.map(function(cacheName) {
+                                        return caches.delete(cacheName);
+                                    })
+                                );
+                            }).then(function() {
+                                showAlert('Cache cleared successfully!', 'success');
+                                // Recalculate storage usage
+                                calculateStorageUsage();
+                            });
+                        }
+                    }
+                });
+            }
+            
+            const resetAppBtn = document.getElementById('reset-app-btn');
+            if (resetAppBtn) {
+                resetAppBtn.addEventListener('click', function() {
+                    if (confirm('WARNING: This will reset the app and delete ALL your data. This action cannot be undone. Are you sure you want to continue?')) {
+                        // Clear all local storage
+                        localStorage.clear();
+                        
+                        // Clear all caches
+                        if ('caches' in window) {
+                            caches.keys().then(function(cacheNames) {
+                                return Promise.all(
+                                    cacheNames.map(function(cacheName) {
+                                        return caches.delete(cacheName);
+                                    })
+                                );
+                            });
+                        }
+                        
+                        // Show success message and reload page
+                        showAlert('App reset successful. Reloading...', 'success');
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 2000);
+                    }
+                });
+            }
+            
+            // Location detection
+            const detectLocationBtn = document.getElementById('detect-location-btn');
+            if (detectLocationBtn) {
+                detectLocationBtn.addEventListener('click', function() {
+                    if (navigator.geolocation) {
+                        detectLocationBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
+                        detectLocationBtn.disabled = true;
+                        
+                        navigator.geolocation.getCurrentPosition(
+                            function(position) {
+                                // Get location name from coordinates using reverse geocoding
+                                fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${position.coords.latitude}&lon=${position.coords.longitude}`)
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        const locationName = data.display_name.split(',').slice(0, 3).join(',');
+                                        document.getElementById('default-location').value = locationName;
+                                        
+                                        // Restore button
+                                        detectLocationBtn.innerHTML = '<i class="fas fa-map-marker-alt"></i>';
+                                        detectLocationBtn.disabled = false;
+                                    })
+                                    .catch(error => {
+                                        // If reverse geocoding fails, just use coordinates
+                                        document.getElementById('default-location').value = `${position.coords.latitude.toFixed(4)}, ${position.coords.longitude.toFixed(4)}`;
+                                        
+                                        // Restore button
+                                        detectLocationBtn.innerHTML = '<i class="fas fa-map-marker-alt"></i>';
+                                        detectLocationBtn.disabled = false;
+                                    });
+                            },
+                            function(error) {
+                                showAlert('Unable to retrieve your location. Please enter it manually.', 'warning');
+                                
+                                // Restore button
+                                detectLocationBtn.innerHTML = '<i class="fas fa-map-marker-alt"></i>';
+                                detectLocationBtn.disabled = false;
+                            }
+                        );
+                    } else {
+                        showAlert('Geolocation is not supported by your browser. Please enter your location manually.', 'warning');
+                    }
+                });
+            }
+        }
+        
+        // Export all data
+        function exportAllData() {
+            // Collect all data from localStorage
+            const data = {};
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key.startsWith('safeNepal_')) {
+                    try {
+                        data[key] = JSON.parse(localStorage.getItem(key));
+                    } catch (e) {
+                        data[key] = localStorage.getItem(key);
+                    }
+                }
+            }
+            
+            // Create JSON file
+            const dataStr = JSON.stringify(data, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(dataBlob);
+            
+            // Create download link
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `SafeNepal_Backup_${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(a);
+            a.click();
+            
+            // Clean up
+            setTimeout(() => {
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }, 100);
+        }
+        
+        // Import all data
+        function importAllData(data) {
+            if (!data || typeof data !== 'object') {
+                showAlert('Invalid data format. Import failed.', 'danger');
+                return;
+            }
+            
+            try {
+                // Import each data item
+                Object.keys(data).forEach(key => {
+                    if (key.startsWith('safeNepal_')) {
+                        localStorage.setItem(key, JSON.stringify(data[key]));
+                    }
+                });
+                
+                showAlert('Data imported successfully! Reloading...', 'success');
+                
+                // Reload page to apply imported settings
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
+            } catch (error) {
+                showAlert('Error importing data: ' + error.message, 'danger');
+            }
+        }
+        
+        // Show alert message
+        function showAlert(message, type = 'info') {
+            // Create alert element
+            const alertEl = document.createElement('div');
+            alertEl.className = `alert alert-${type} alert-dismissible fade show position-fixed top-0 start-50 translate-middle-x mt-3`;
+            alertEl.style.zIndex = '9999';
+            alertEl.style.maxWidth = '90%';
+            alertEl.style.width = '500px';
+            alertEl.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            `;
+            
+            // Add to document
+            document.body.appendChild(alertEl);
+            
+            // Auto-dismiss after 5 seconds
+            setTimeout(() => {
+                if (alertEl.parentNode) {
+                    const bsAlert = new bootstrap.Alert(alertEl);
+                    bsAlert.close();
+                }
+            }, 5000);
+        }
+    </script>
+</body>
+</html>

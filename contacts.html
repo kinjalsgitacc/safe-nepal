@@ -1,20 +1,31 @@
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="light">
-
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Emergency Contacts | SafeNepal</title>
     <meta name="description" content="Manage your emergency contacts for disaster preparedness">
-
-    <!-- Preload critical resources -->
-    <link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" as="style">
-    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style">
-
-    <!-- CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Manifest for PWA -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- iOS support -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="SafeNepal">
+    <link rel="apple-touch-icon" href="/images/icons/icon-152x152.png">
     <style>
          :root {
             --primary: #2563eb;
@@ -27,7 +38,7 @@
         
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #f8fafc;
+            background-color: #ffffff;
             line-height: 1.6;
         }
         /* Accessibility */
@@ -44,11 +55,13 @@
         /* Page Header */
         
         .page-header {
-            background: linear-gradient(135deg, var(--primary) 0%, #1e40af 100%);
-            color: white;
-            padding: 3rem 0;
-            margin-bottom: 2rem;
+            background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+            padding: 4rem 0 3rem;
             position: relative;
+            border-radius: 0 0 2rem 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            color: #ffffff;
         }
         /* Section Titles */
         
@@ -72,55 +85,71 @@
         /* Contact Cards */
         
         .contact-card {
-            background: white;
-            border-radius: 12px;
-            padding: 1.25rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            background-color: #ffffff;
+            border-radius: 1.25rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            padding: 1.75rem;
             transition: all 0.3s ease;
             height: 100%;
-            border-left: 4px solid var(--primary);
+            border-left: none;
+            border-top: 5px solid var(--primary);
         }
         
         .contact-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            transform: translateY(-7px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
         }
         
         .contact-card.essential {
-            border-left-color: var(--danger);
+            border-top-color: var(--danger);
+            border-left: none;
         }
         
         .contact-card i {
-            font-size: 1.5rem;
-            width: 40px;
-            height: 40px;
+            font-size: 1.75rem;
+            width: 60px;
+            height: 60px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             border-radius: 50%;
-            background-color: rgba(37, 99, 235, 0.1);
+            background-color: rgba(13, 110, 253, 0.1);
             color: var(--primary);
+            transition: all 0.3s ease;
+        }
+        
+        .contact-card:hover i {
+            transform: scale(1.1);
         }
         
         .contact-card.essential i {
-            background-color: rgba(220, 38, 38, 0.1);
+            background-color: rgba(220, 53, 69, 0.1);
             color: var(--danger);
         }
         
         .contact-info h6 {
-            font-weight: 600;
-            margin-bottom: 0.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+            color: #1e293b;
         }
         
         .contact-info a {
             color: #4b5563;
             text-decoration: none;
-            transition: color 0.2s;
+            transition: all 0.2s;
+            font-weight: 500;
+            display: block;
+            margin-bottom: 0.25rem;
         }
         
         .contact-info a:hover {
+            color: var(--primary);
+            transform: translateX(3px);
+        }
+        
+        .contact-card.essential .contact-info a:hover {
             color: var(--danger);
-            text-decoration: none;
         }
         /* Remove Button */
         
@@ -198,21 +227,33 @@
     <!-- Skip to content link -->
     <a href="#main-content" class="visually-hidden-focusable">Skip to main content</a>
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary py-3">
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
         <div class="container">
-            <a class="navbar-brand fw-bold fs-3" href="index.html">
-                <i class="fas fa-shield-alt me-2"></i>SafeNepal
+            <a class="navbar-brand d-flex align-items-center" href="index.html">
+                <i class="fas fa-shield-alt me-2"></i>
+                <span>SafeNepal</span>
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mx-auto justify-content-center">
-
-                    <li class="nav-item"><a class="nav-link " href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="safety.html">Safety Guides</a></li>
                     <li class="nav-item"><a class="nav-link active" href="contacts.html">Emergency Contacts</a></li>
                     <li class="nav-item"><a class="nav-link" href="shelters.html">Shelters</a></li>
+                    <li class="nav-item"><a class="nav-link" href="community-reports.html">Community Reports</a></li>
+                    <li class="nav-item"><a class="nav-link" href="simulation.html">Simulation</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-globe me-1"></i> <span class="language-text">English</span>
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="languageDropdown">
+                            <li><a class="dropdown-item language-option" href="#" data-lang="en">English</a></li>
+                            <li><a class="dropdown-item language-option" href="#" data-lang="ne">नेपाली</a></li>
+                        </ul>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -355,55 +396,23 @@
         </div>
     </div>
 
-       <footer class="bg-primary text-white pt-5 pb-3">
-        <div class="container">
-            <div class="row">
-                <!-- Logo & Description -->
-                <div class="col-md-4 mb-4">
-                    <h3 class="h5 mb-3">
-                        <i class="fas fa-shield-alt me-2"></i>SafeNepal
-                    </h3>
-                    <p class="small">
-                        Your trusted disaster preparedness partner, working to keep communities safe and informed during emergencies in Nepal.
-                    </p>
-                </div>
-    
-                <!-- Quick Links -->
-                <div class="col-md-4 mb-4">
-                    <h5 class="mb-3">Quick Links</h5>
-                    <ul class="list-unstyled small">
-                        <li><a href="index.html" class="text-white text-decoration-none">Home</a></li>
-                        <li><a href="safety.html" class="text-white text-decoration-none">Safety guides</a></li>
-                        <li><a href="contacts.html" class="text-white text-decoration-none">Emergency contacts</a></li>
-                        <li><a href="shelters.html" class="text-white text-decoration-none">Shelters</a></li>
-                    </ul>
-                </div>
-    
-                <!-- Contact Info -->
-                <div class="col-md-4 mb-4">
-                    <h5 class="mb-3">Contact Us</h5>
-                    <p class="small mb-1"><i class="fas fa-map-marker-alt me-2"></i>Kathmandu, Nepal</p>
-                    <p class="small mb-1"><i class="fas fa-phone me-2"></i>+977-9800000000</p>
-                    <p class="small mb-3"><i class="fas fa-envelope me-2"></i>info@safenepal.org</p>
-                    
-                    <!-- Social Media -->
-                    <div>
-                        <a href="#" class="text-white me-3"><i class="fab fa-facebook fa-lg"></i></a>
-                        <a href="#" class="text-white me-3"><i class="fab fa-twitter fa-lg"></i></a>
-                        <a href="#" class="text-white me-3"><i class="fab fa-instagram fa-lg"></i></a>
-                        <a href="#" class="text-white"><i class="fab fa-youtube fa-lg"></i></a>
-                    </div>
-                </div>
-            </div>
-    
-            <!-- Bottom line -->
-            <div class="text-center mt-4 border-top border-white pt-3">
-                <p class="small mb-0">&copy; 2025 SafeNepal. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
     <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/offline.js"></script>
+    <script src="js/language.js"></script>
+    <script src="js/notifications.js"></script>
+    <script src="js/settings.js"></script>
+    
+    <!-- Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then(reg => console.log('Service Worker registered'))
+                    .catch(err => console.log('Service Worker registration failed:', err));
+            });
+        }
+    </script>
     <script>
         // DOM Elements
         const contactForm = document.getElementById('contactForm');
@@ -535,6 +544,142 @@
             toast.show();
         }
     </script>
+    
+    <!-- Initialize App Features -->
+    <script>
+        // Initialize language support
+        document.addEventListener('DOMContentLoaded', () => {
+          if (typeof languageManager !== 'undefined' && typeof languageManager.init === 'function') {
+            languageManager.init();
+          }
+          
+          // Initialize offline support
+          if (typeof offlineManager !== 'undefined' && typeof offlineManager.init === 'function') {
+            offlineManager.init();
+          }
+        });
+        
+        // Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then(reg => console.log('Service Worker registered'))
+                    .catch(err => console.log('Service Worker registration failed:', err));
+            });
+        }
+    </script>
+    
+      <!-- Footer -->
+    <footer class="bg-dark text-white py-4 mt-5">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-4 mb-4">
+            <h5 class="fw-bold mb-3">
+              <i class="fas fa-shield-alt me-2 text-primary"></i>
+              SafeNepal
+            </h5>
+            <p class="text-light opacity-75 mb-3">
+              Your trusted companion for disaster preparedness and emergency response in Nepal.
+            </p>
+            <div class="d-flex gap-3">
+              <a href="#" class="text-light opacity-75 hover-opacity-100">
+                <i class="fab fa-facebook-f"></i>
+              </a>
+              <a href="#" class="text-light opacity-75 hover-opacity-100">
+                <i class="fab fa-twitter"></i>
+              </a>
+              <a href="#" class="text-light opacity-75 hover-opacity-100">
+                <i class="fab fa-instagram"></i>
+              </a>
+              <a href="#" class="text-light opacity-75 hover-opacity-100">
+                <i class="fab fa-linkedin-in"></i>
+              </a>
+            </div>
+          </div>
+          
+          <div class="col-lg-2 col-md-6 mb-4">
+            <h6 class="fw-semibold mb-3">Quick Links</h6>
+            <ul class="list-unstyled">
+              <li class="mb-2">
+                <a href="index.html" class="text-light opacity-75 text-decoration-none hover-opacity-100">
+                  <i class="fas fa-home me-2"></i>Home
+                </a>
+              </li>
+              <li class="mb-2">
+                <a href="safety.html" class="text-light opacity-75 text-decoration-none hover-opacity-100">
+                  <i class="fas fa-shield-alt me-2"></i>Safety Guides
+                </a>
+              </li>
+              <li class="mb-2">
+                <a href="contacts.html" class="text-light opacity-75 text-decoration-none hover-opacity-100">
+                  <i class="fas fa-phone me-2"></i>Emergency Contacts
+                </a>
+              </li>
+              <li class="mb-2">
+                <a href="shelters.html" class="text-light opacity-75 text-decoration-none hover-opacity-100">
+                  <i class="fas fa-map-marker-alt me-2"></i>Shelters
+                </a>
+              </li>
+            </ul>
+          </div>
+          
+          <div class="col-lg-3 col-md-6 mb-4">
+            <h6 class="fw-semibold mb-3">Emergency Contacts</h6>
+            <ul class="list-unstyled">
+              <li class="mb-2">
+                <i class="fas fa-phone me-2 text-danger"></i>
+                <span class="text-light opacity-75">Police: 100</span>
+              </li>
+              <li class="mb-2">
+                <i class="fas fa-ambulance me-2 text-danger"></i>
+                <span class="text-light opacity-75">Ambulance: 102</span>
+              </li>
+              <li class="mb-2">
+                <i class="fas fa-fire me-2 text-danger"></i>
+                <span class="text-light opacity-75">Fire: 101</span>
+              </li>
+              <li class="mb-2">
+                <i class="fas fa-exclamation-triangle me-2 text-warning"></i>
+                <span class="text-light opacity-75">Disaster Helpline: 1131</span>
+              </li>
+            </ul>
+          </div>
+          
+          <div class="col-lg-3 mb-4">
+            <h6 class="fw-semibold mb-3">Contact Info</h6>
+            <ul class="list-unstyled">
+              <li class="mb-2">
+                <i class="fas fa-envelope me-2 text-primary"></i>
+                <span class="text-light opacity-75">info@safenepal.gov.np</span>
+              </li>
+              <li class="mb-2">
+                <i class="fas fa-map-marker-alt me-2 text-primary"></i>
+                <span class="text-light opacity-75">Kathmandu, Nepal</span>
+              </li>
+              <li class="mb-2">
+                <i class="fas fa-clock me-2 text-primary"></i>
+                <span class="text-light opacity-75">24/7 Emergency Support</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+        
+        <hr class="my-4 opacity-25">
+        
+        <div class="row align-items-center">
+          <div class="col-md-6">
+            <p class="mb-0 text-light opacity-75">
+              &copy; 2025 SafeNepal. All rights reserved.
+            </p>
+          </div>
+          <div class="col-md-6 text-md-end">
+            <a href="#" class="text-light opacity-75 text-decoration-none me-3 hover-opacity-100">Privacy Policy</a>
+            <a href="#" class="text-light opacity-75 text-decoration-none me-3 hover-opacity-100">Terms of Service</a>
+            <a href="#" class="text-light opacity-75 text-decoration-none hover-opacity-100">Sitemap</a>
+          </div>
+        </div>
+      </div>
+    </footer>
 </body>
 
 </html>

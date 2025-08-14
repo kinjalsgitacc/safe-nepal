@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community Reports - SafeNepal</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Manifest for PWA -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- iOS support -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="SafeNepal">
+    <link rel="apple-touch-icon" href="/images/icons/icon-152x152.png">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="index.html">
+                <i class="fas fa-shield-alt me-2"></i>
+                <span>SafeNepal</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto justify-content-center">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="safety.html">Safety Guides</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contacts.html">Emergency Contacts</a></li>
+                    <li class="nav-item"><a class="nav-link" href="shelters.html">Shelters</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="community-reports.html">Community Reports</a></li>
+                    <li class="nav-item"><a class="nav-link" href="simulation.html">Simulation</a></li>
+                </ul>
+                <div class="d-flex">
+                    <div class="dropdown me-2">
+                        <button class="btn btn-outline-light dropdown-toggle" type="button" id="languageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-language me-1"></i> EN
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="languageDropdown">
+                            <li><a class="dropdown-item" href="#" data-lang="en">English</a></li>
+                            <li><a class="dropdown-item" href="#" data-lang="ne">नेपाली</a></li>
+                            <li><a class="dropdown-item" href="#" data-lang="hi">हिन्दी</a></li>
+                            <li><a class="dropdown-item" href="#" data-lang="zh">中文</a></li>
+                        </ul>
+                    </div>
+                    <button id="notifications-btn" class="btn btn-outline-light position-relative">
+                        <i class="fas fa-bell"></i>
+                        <span id="notification-badge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none">
+                            <span id="notification-count">0</span>
+                            <span class="visually-hidden">unread notifications</span>
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+        <div class="row">
+            <div class="col-lg-8">
+                <!-- Page Title -->
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h1 class="h2"><i class="fas fa-bullhorn me-2 text-primary"></i> Community Reports</h1>
+                    <div class="d-flex">
+                        <button class="btn btn-outline-primary me-2" id="refresh-reports-btn">
+                            <i class="fas fa-sync-alt me-1"></i> Refresh
+                        </button>
+                        <div class="dropdown">
+                            <button class="btn btn-outline-primary dropdown-toggle" type="button" id="viewDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-eye me-1"></i> View
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="viewDropdown">
+                                <li><a class="dropdown-item active" href="#" data-view="list"><i class="fas fa-list me-1"></i> List</a></li>
+                                <li><a class="dropdown-item" href="#" data-view="map"><i class="fas fa-map me-1"></i> Map</a></li>
+                                <li><a class="dropdown-item" href="#" data-view="both"><i class="fas fa-columns me-1"></i> Both</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Alert Banner -->
+                <div class="alert alert-info mb-4" role="alert">
+                    <div class="d-flex">
+                        <div class="me-3">
+                            <i class="fas fa-info-circle fa-2x"></i>
+                        </div>
+                        <div>
+                            <h5 class="alert-heading">Community-Powered Disaster Reporting</h5>
+                            <p class="mb-0">Help others by reporting disasters, road blockages, or infrastructure damage in your area. Your reports can save lives and assist emergency responders in prioritizing their efforts.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reports List View -->
+                <div id="reports-list-view" class="mb-4">
+                    <div id="reports-list-container">
+                        <!-- Reports will be loaded here by JavaScript -->
+                        <div class="text-center py-5">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <p class="mt-2">Loading reports...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reports Map View (initially hidden) -->
+                <div id="reports-map-view" class="mb-4 d-none">
+                    <div class="card border-primary">
+                        <div class="card-body p-0">
+                            <div id="reports-map" style="height: 500px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <!-- User Profile Section -->
+                <div id="user-profile">
+                    <!-- User profile will be loaded here by JavaScript -->
+                    <div class="card border-primary mb-4">
+                        <div class="card-body text-center">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <p class="mt-2">Loading profile...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Report Form -->
+                <div id="report-form-container">
+                    <!-- Report form will be loaded here by JavaScript -->
+                    <div class="card border-primary mb-4">
+                        <div class="card-body text-center">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <p class="mt-2">Loading form...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Report Statistics -->
+                <div class="card border-primary mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0"><i class="fas fa-chart-bar me-2"></i> Report Statistics</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-6">
+                                <div class="border rounded p-3 text-center">
+                                    <h3 class="text-primary mb-0" id="total-reports-count">0</h3>
+                                    <small class="text-muted">Total Reports</small>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="border rounded p-3 text-center">
+                                    <h3 class="text-warning mb-0" id="today-reports-count">0</h3>
+                                    <small class="text-muted">Today</small>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="border rounded p-3 text-center">
+                                    <h3 class="text-danger mb-0" id="critical-reports-count">0</h3>
+                                    <small class="text-muted">Critical</small>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="border rounded p-3 text-center">
+                                    <h3 class="text-success mb-0" id="verified-reports-count">0</h3>
+                                    <small class="text-muted">Verified</small>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <h6 class="mb-3">Top Categories</h6>
+                        <div id="category-stats">
+                            <!-- Category stats will be loaded here by JavaScript -->
+                            <div class="text-center py-2">
+                                <div class="spinner-border spinner-border-sm text-primary" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <small class="ms-2">Loading statistics...</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Safety Tips -->
+                <div class="card border-primary mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0"><i class="fas fa-lightbulb me-2"></i> Reporting Tips</h5>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <i class="fas fa-check-circle text-success me-2"></i> Be accurate and specific about locations
+                            </li>
+                            <li class="list-group-item">
+                                <i class="fas fa-check-circle text-success me-2"></i> Include photos when possible for verification
+                            </li>
+                            <li class="list-group-item">
+                                <i class="fas fa-check-circle text-success me-2"></i> Report severity honestly - don't exaggerate
+                            </li>
+                            <li class="list-group-item">
+                                <i class="fas fa-check-circle text-success me-2"></i> Update your reports as situations change
+                            </li>
+                            <li class="list-group-item">
+                                <i class="fas fa-check-circle text-success me-2"></i> For life-threatening emergencies, call authorities first
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+    
+    <!-- Custom JS -->
+    <script src="js/offline.js"></script>
+    <script src="js/language.js"></script>
+    <script src="js/notifications.js"></script>
+    <script src="js/community-reports.js"></script>
+    <script src="js/settings.js"></script>
+    
+    <script>
+        // Initialize language support
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize language support
+            if (typeof languageManager !== 'undefined') {
+                languageManager.init();
+            }
+            
+            // Initialize notifications
+            if (typeof notificationManager !== 'undefined') {
+                notificationManager.init();
+            }
+            
+            // Set up view toggle
+            const viewDropdownItems = document.querySelectorAll('[data-view]');
+            const reportsListView = document.getElementById('reports-list-view');
+            const reportsMapView = document.getElementById('reports-map-view');
+            
+            viewDropdownItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Remove active class from all items
+                    viewDropdownItems.forEach(i => i.classList.remove('active'));
+                    
+                    // Add active class to clicked item
+                    this.classList.add('active');
+                    
+                    // Get view type
+                    const viewType = this.getAttribute('data-view');
+                    
+                    // Show/hide views based on selection
+                    if (viewType === 'list') {
+                        reportsListView.classList.remove('d-none');
+                        reportsMapView.classList.add('d-none');
+                    } else if (viewType === 'map') {
+                        reportsListView.classList.add('d-none');
+                        reportsMapView.classList.remove('d-none');
+                        // Trigger map resize event to fix rendering issues
+                        if (communityReportsManager.map) {
+                            setTimeout(() => {
+                                communityReportsManager.map.invalidateSize();
+                            }, 100);
+                        }
+                    } else if (viewType === 'both') {
+                        reportsListView.classList.remove('d-none');
+                        reportsMapView.classList.remove('d-none');
+                        // Trigger map resize event to fix rendering issues
+                        if (communityReportsManager.map) {
+                            setTimeout(() => {
+                                communityReportsManager.map.invalidateSize();
+                            }, 100);
+                        }
+                    }
+                });
+            });
+            
+            // Set up refresh button
+            const refreshBtn = document.getElementById('refresh-reports-btn');
+            if (refreshBtn) {
+                refreshBtn.addEventListener('click', function() {
+                    // Show loading spinner
+                    this.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Refreshing...';
+                    this.disabled = true;
+                    
+                    // Reload reports
+                    if (typeof communityReportsManager !== 'undefined') {
+                        communityReportsManager.loadReports();
+                        communityReportsManager.renderReportsList();
+                        communityReportsManager.renderReportsMap();
+                        
+                        // Update statistics
+                        updateStatistics();
+                    }
+                    
+                    // Restore button after 1 second
+                    setTimeout(() => {
+                        this.innerHTML = '<i class="fas fa-sync-alt me-1"></i> Refresh';
+                        this.disabled = false;
+                    }, 1000);
+                });
+            }
+            
+            // Update statistics
+            function updateStatistics() {
+                if (typeof communityReportsManager !== 'undefined' && communityReportsManager.reports) {
+                    // Update counts
+                    document.getElementById('total-reports-count').textContent = communityReportsManager.reports.length;
+                    
+                    // Count today's reports
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0);
+                    const todayReports = communityReportsManager.reports.filter(report => {
+                        const reportDate = new Date(report.timestamp);
+                        return reportDate >= today;
+                    });
+                    document.getElementById('today-reports-count').textContent = todayReports.length;
+                    
+                    // Count critical reports
+                    const criticalReports = communityReportsManager.reports.filter(report => report.severity === 'critical');
+                    document.getElementById('critical-reports-count').textContent = criticalReports.length;
+                    
+                    // Count verified reports
+                    const verifiedReports = communityReportsManager.reports.filter(report => report.verified);
+                    document.getElementById('verified-reports-count').textContent = verifiedReports.length;
+                    
+                    // Update category stats
+                    const categoryStats = {};
+                    communityReportsManager.reports.forEach(report => {
+                        if (!categoryStats[report.category]) {
+                            categoryStats[report.category] = {
+                                count: 0,
+                                name: report.categoryName,
+                                icon: report.categoryIcon
+                            };
+                        }
+                        categoryStats[report.category].count++;
+                    });
+                    
+                    // Sort categories by count
+                    const sortedCategories = Object.values(categoryStats).sort((a, b) => b.count - a.count);
+                    
+                    // Display top 5 categories
+                    const categoryStatsContainer = document.getElementById('category-stats');
+                    if (categoryStatsContainer) {
+                        const topCategories = sortedCategories.slice(0, 5);
+                        
+                        if (topCategories.length > 0) {
+                            categoryStatsContainer.innerHTML = '';
+                            
+                            topCategories.forEach(category => {
+                                const percentage = Math.round((category.count / communityReportsManager.reports.length) * 100);
+                                
+                                categoryStatsContainer.innerHTML += `
+                                    <div class="mb-2">
+                                        <div class="d-flex justify-content-between mb-1">
+                                            <span><i class="fas ${category.icon} me-1"></i> ${category.name}</span>
+                                            <span>${category.count} (${percentage}%)</span>
+                                        </div>
+                                        <div class="progress" style="height: 8px;">
+                                            <div class="progress-bar bg-primary" role="progressbar" style="width: ${percentage}%" aria-valuenow="${percentage}" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                    </div>
+                                `;
+                            });
+                        } else {
+                            categoryStatsContainer.innerHTML = '<p class="text-muted small">No data available</p>';
+                        }
+                    }
+                }
+            }
+            
+            // Initial statistics update
+            setTimeout(updateStatistics, 1000);
+            
+            // Listen for report submitted event
+            document.addEventListener('report_submitted', function() {
+                updateStatistics();
+            });
+        });
+    </script>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4 mt-5">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-4 mb-4">
+            <h5 class="fw-bold mb-3">
+              <i class="fas fa-shield-alt me-2 text-primary"></i>
+              SafeNepal
+            </h5>
+            <p class="text-light opacity-75 mb-3">
+              Your trusted companion for disaster preparedness and emergency response in Nepal.
+            </p>
+            <div class="d-flex gap-3">
+              <a href="#" class="text-light opacity-75 hover-opacity-100">
+                <i class="fab fa-facebook-f"></i>
+              </a>
+              <a href="#" class="text-light opacity-75 hover-opacity-100">
+                <i class="fab fa-twitter"></i>
+              </a>
+              <a href="#" class="text-light opacity-75 hover-opacity-100">
+                <i class="fab fa-instagram"></i>
+              </a>
+              <a href="#" class="text-light opacity-75 hover-opacity-100">
+                <i class="fab fa-linkedin-in"></i>
+              </a>
+            </div>
+          </div>
+          
+          <div class="col-lg-2 col-md-6 mb-4">
+            <h6 class="fw-semibold mb-3">Quick Links</h6>
+            <ul class="list-unstyled">
+              <li class="mb-2">
+                <a href="index.html" class="text-light opacity-75 text-decoration-none hover-opacity-100">
+                  <i class="fas fa-home me-2"></i>Home
+                </a>
+              </li>
+              <li class="mb-2">
+                <a href="safety.html" class="text-light opacity-75 text-decoration-none hover-opacity-100">
+                  <i class="fas fa-shield-alt me-2"></i>Safety Guides
+                </a>
+              </li>
+              <li class="mb-2">
+                <a href="contacts.html" class="text-light opacity-75 text-decoration-none hover-opacity-100">
+                  <i class="fas fa-phone me-2"></i>Emergency Contacts
+                </a>
+              </li>
+              <li class="mb-2">
+                <a href="shelters.html" class="text-light opacity-75 text-decoration-none hover-opacity-100">
+                  <i class="fas fa-map-marker-alt me-2"></i>Shelters
+                </a>
+              </li>
+            </ul>
+          </div>
+          
+          <div class="col-lg-3 col-md-6 mb-4">
+            <h6 class="fw-semibold mb-3">Emergency Contacts</h6>
+            <ul class="list-unstyled">
+              <li class="mb-2">
+                <i class="fas fa-phone me-2 text-danger"></i>
+                <span class="text-light opacity-75">Police: 100</span>
+              </li>
+              <li class="mb-2">
+                <i class="fas fa-ambulance me-2 text-danger"></i>
+                <span class="text-light opacity-75">Ambulance: 102</span>
+              </li>
+              <li class="mb-2">
+                <i class="fas fa-fire me-2 text-danger"></i>
+                <span class="text-light opacity-75">Fire: 101</span>
+              </li>
+              <li class="mb-2">
+                <i class="fas fa-exclamation-triangle me-2 text-warning"></i>
+                <span class="text-light opacity-75">Disaster Helpline: 1131</span>
+              </li>
+            </ul>
+          </div>
+          
+          <div class="col-lg-3 mb-4">
+            <h6 class="fw-semibold mb-3">Contact Info</h6>
+            <ul class="list-unstyled">
+              <li class="mb-2">
+                <i class="fas fa-envelope me-2 text-primary"></i>
+                <span class="text-light opacity-75">info@safenepal.gov.np</span>
+              </li>
+              <li class="mb-2">
+                <i class="fas fa-map-marker-alt me-2 text-primary"></i>
+                <span class="text-light opacity-75">Kathmandu, Nepal</span>
+              </li>
+              <li class="mb-2">
+                <i class="fas fa-clock me-2 text-primary"></i>
+                <span class="text-light opacity-75">24/7 Emergency Support</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+        
+        <hr class="my-4 opacity-25">
+        
+        <div class="row align-items-center">
+          <div class="col-md-6">
+            <p class="mb-0 text-light opacity-75">
+              &copy; 2025 SafeNepal. All rights reserved.
+            </p>
+          </div>
+          <div class="col-md-6 text-md-end">
+            <a href="#" class="text-light opacity-75 text-decoration-none me-3 hover-opacity-100">Privacy Policy</a>
+            <a href="#" class="text-light opacity-75 text-decoration-none me-3 hover-opacity-100">Terms of Service</a>
+            <a href="#" class="text-light opacity-75 text-decoration-none hover-opacity-100">Sitemap</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+</body>
+</html>
