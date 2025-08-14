@@ -642,99 +642,74 @@
 
         // Load shelters from OpenStreetMap
         async function loadShelters() {
- if (!userLocation) {
- showLoadingState(false, 'Enable location to find nearby shelters', true);
- return;
- }
+            if (!userLocation) {
+                showLoadingState(false, 'Enable location to find nearby shelters', true);
+                return;
+            }
 
- // Add a backup Overpass endpoint
- const OVERPASS_ENDPOINTS = [
- 'https://overpass-api.de/api/interpreter',
- 'https://lz4.overpass-api.de/api/interpreter',
- 'https://overpass.kumi.systems/api/interpreter'
- ];
- let triedEndpoints = 0;
- let radius = CONFIG.SHELTER_RADIUS;
- let maxAttempts = 3;
+            try {
+                showLoadingState(true, 'Finding nearby shelters...');
 
- async function tryFetch(endpoint) {
- try {
- showLoadingState(true, `Finding nearby shelters... (radius: ${radius/1000}km)`);
- const [lat, lon] = userLocation;
- const query = `
- [out:json][timeout:25];
- (
- node["amenity"="shelter"](around:${radius},${lat},${lon});
- node["emergency"="shelter"](around:${radius},${lat},${lon});
- way["amenity"="shelter"](around:${radius},${lat},${lon});
- way["emergency"="shelter"](around:${radius},${lat},${lon});
- );
- out center;
- `;
+                const [lat, lon] = userLocation;
+                const query = `
+                    [out:json][timeout:25];
+                    (
+                      node["amenity"="shelter"](around:${CONFIG.SHELTER_RADIUS},${lat},${lon});
+                      node["emergency"="shelter"](around:${CONFIG.SHELTER_RADIUS},${lat},${lon});
+                      way["amenity"="shelter"](around:${CONFIG.SHELTER_RADIUS},${lat},${lon});
+                      way["emergency"="shelter"](around:${CONFIG.SHELTER_RADIUS},${lat},${lon});
+                    );
+                    out center;
+                `;
 
- const response = await fetch(endpoint, {
- method: 'POST',
- headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
- body: `data=${encodeURIComponent(query)}`
- });
+                const response = await fetch(CONFIG.OVERPASS_API, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: `data=${encodeURIComponent(query)}`
+                });
 
- if (!response.ok) throw new Error(`Overpass API error: ${response.status}`);
- const data = await response.json();
- shelters = [];
+                const data = await response.json();
+                shelters = [];
 
- if (data.elements && data.elements.length > 0) {
- // Process shelter data
- data.elements.forEach(element => {
- let shelter = {
- id: element.id,
- type: element.type,
- name: (element.tags && element.tags.name) || 'Unnamed Shelter',
- lat: element.type === 'node' ? element.lat : (element.center ? element.center.lat : undefined),
- lon: element.type === 'node' ? element.lon : (element.center ? element.center.lon : undefined),
- tags: element.tags || {}
- };
- if (shelter.lat && shelter.lon) {
- shelter.distance = calculateDistance(
- userLocation[0], userLocation[1],
- shelter.lat, shelter.lon
- );
- shelters.push(shelter);
- }
- });
+                if (data.elements && data.elements.length > 0) {
+                    // Process shelter data
+                    data.elements.forEach(element => {
+                        let shelter = {
+                            id: element.id,
+                            type: element.type,
+                            name: (element.tags && element.tags.name) || 'Unnamed Shelter',
+                            lat: element.type === 'node' ? element.lat : (element.center ? element.center.lat : undefined),
+                            lon: element.type === 'node' ? element.lon : (element.center ? element.center.lon : undefined),
+                            tags: element.tags || {}
+                        };
 
- // Sort by distance
- shelters.sort((a, b) => a.distance - b.distance);
 
- // Render shelters
- renderShelters();
- showLoadingState(false);
- return true;
- } else {
- // No shelters found, try increasing radius if possible
- if (radius < 50000) { // Max 50km
- radius *= 2;
- return false;
- } else {
- showLoadingState(false, 'No shelters found within 50km. Try checking official sources.', false);
- return true; // Stop trying
- }
- }
- } catch (error) {
- console.error('Error loading shelters:', error);
- return false;
- }
- }
+                        if (shelter.lat && shelter.lon) {
+                            // Calculate distance from user
+                            shelter.distance = calculateDistance(
+                                userLocation[0], userLocation[1],
+                                shelter.lat, shelter.lon
+                            );
+                            shelters.push(shelter);
+                        }
+                    });
 
- // Try each endpoint up to maxAttempts
- for (let i = 0; i < OVERPASS_ENDPOINTS.length && triedEndpoints < maxAttempts; i++) {
- let success = await tryFetch(OVERPASS_ENDPOINTS[i]);
- if (success) return;
- triedEndpoints++;
- }
+                    // Sort by distance
+                    shelters.sort((a, b) => a.distance - b.distance);
 
- // If all endpoints failed
- showLoadingState(false, 'Failed to load shelters. Overpass API may be down or your network is offline. Please try again.', true);
-}
+                    // Render shelters
+                    renderShelters();
+                    showLoadingState(false);
+                } else {
+                    showLoadingState(false, 'No shelters found in your area', false);
+                }
+            } catch (error) {
+                console.error('Error loading shelters:', error);
+                showLoadingState(false, 'Failed to load shelters. Please try again.', true);
+            }
+        }
 
         // Render shelters on map and in list
         function renderShelters() {
